@@ -92,7 +92,7 @@ body {
     background-color: #fed136;
     font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif; }
   #mainNav .navbar-brand {
-    color: #fed136;
+    color: #ffffff;
     font-family: 'Kaushan Script', 'Helvetica Neue', Helvetica, Arial, cursive; }
     #mainNav .navbar-brand.active, #mainNav .navbar-brand:active, #mainNav .navbar-brand:focus, #mainNav .navbar-brand:hover {
       color: #fec503; }
@@ -133,7 +133,7 @@ body {
 header.masthead {
   text-align: center;
   color: white;
-  background-image: url("../img/header-bg.jpg");
+  background-image: url("../img/big_data.jpg");
   background-repeat: no-repeat;
   background-attachment: scroll;
   background-position: center center;
@@ -168,8 +168,8 @@ header.masthead {
       margin-bottom: 25px;
       font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; }
     header.masthead .intro-text .intro-heading {
-      font-size: 75px;
-      font-weight: 700;
+      font-size: 50x;
+      font-weight: 550;
       line-height: 75px;
       margin-bottom: 50px;
       font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif; } }
@@ -426,11 +426,11 @@ header.masthead {
       padding: 0 100px 20px 20px; } }
 
 .team-member {
-  margin-bottom: 50px;
+  margin-bottom: 20px;
   text-align: center; }
   .team-member img {
-    width: 225px;
-    height: 225px;
+    width: 230px;
+    height: 220px;
     border: 7px solid #fff; }
   .team-member h4 {
     margin-top: 25px;
@@ -509,3 +509,11 @@ ul.social-buttons {
     background-color: #212529; }
     ul.social-buttons li a:active, ul.social-buttons li a:focus, ul.social-buttons li a:hover {
       background-color: #fed136; }
+
+.flexbox-content {
+  display:flex;
+ justify-content:center;
+ align-items: center;
+ flex-flow: column;
+ margin: 0 auto;
+}
