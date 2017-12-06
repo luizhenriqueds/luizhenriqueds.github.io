@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>NLP</title>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js"></script>
+<script src="bower_components/jqcloud2/dist/jqcloud.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+
+
+<link rel="stylesheet" href="bower_components/jqcloud2/dist/jqcloud.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+
+<script type="text/javascript">
+	window.onload = function () {
+		$("#result").hide();
+		$("#btn-send").click(function() {
+	  		inputLink = $('#link').val();
+			$.ajax({
+			    contentType: 'application/json',
+			    data: JSON.stringify({ "url": inputLink}),
+			    dataType: 'json',
+			    success: function(data){
+			    	top_terms = data['results'][0];
+			    	weights = data['results'][1]
+
+			    	var words = [
+					];
+
+					for (var i = 0; i < top_terms.length; i++) {
+						words.push({"text": top_terms[i], "weight": weights[i]});
+					}
+
+					$("#top_words").html("");
+					for (var i = 0; i < top_terms.length; i++) {
+						$("#result").show();
+						$("#top_words").append("<strong>#" + top_terms[i] + "</strong> ");
+					}
+
+				   $('#keywords').jQCloud(words, { 
+				   		width: 500,
+				   		height: 300
+					});
+
+					var ctx = document.getElementById("myChart").getContext('2d');
+					var myChart = new Chart(ctx, {
+					    type: 'bar',
+					    data: {
+					        labels: top_terms,
+					        datasets: [{
+					            label: '# of appearances',
+					            data: weights,
+					            backgroundColor: [
+					                'rgba(255, 99, 132, 0.2)',
+					                'rgba(54, 162, 235, 0.2)',
+					                'rgba(255, 206, 86, 0.2)',
+					                'rgba(75, 192, 192, 0.2)',
+					                'rgba(153, 102, 255, 0.2)',
+					                'rgba(255, 159, 64, 0.2)'
+					            ],
+					            borderColor: [
+					                'rgba(255,99,132,1)',
+					                'rgba(54, 162, 235, 1)',
+					                'rgba(255, 206, 86, 1)',
+					                'rgba(75, 192, 192, 1)',
+					                'rgba(153, 102, 255, 1)',
+					                'rgba(255, 159, 64, 1)'
+					            ],
+					            borderWidth: 1
+					        }]
+					    },
+					    options: {
+					        scales: {
+					            yAxes: [{
+					                ticks: {
+					                    beginAtZero:true
+					                }
+					            }]
+					        }
+					    }
+					});
+
+			    },
+			    processData: false,
+			    type: 'POST',
+			    url: 'http://localhost:9000/api'
+			});
+		})
+
+		
+	}
+
+</script>
+
+</head>
+<body>
+
+<div class="row">
+	<div class="col-lg-2"></div>
+	<div class="col-lg-8">
+		<br>
+		<h1>NLP</h1>
+		<h4>Extracting keywords from news</h4>
+		<p>A project to demonstrate the Natural Language Processing tools in python. This example uses a scraping API - developed with beautiful soup - to extract the text from a news 
+			and highlight the most significant words. The results can be used in several manners such as web pages auto tagging, keywords extraction, and text indexing.
+			The NLP processes (cleaning, tokenizing, lemmatizing, ngrams, etc) are developed in python and a web service outputs the result to an external web application.
+		 This project currently supports to scrap only the <a href="http://www.foxnews.com/">Fox News</a> website. More websites will be added later.</p>
+	</div>
+	<div class="col-lg-2"></div>
+</div>
+<br>
+
+<div class="row">
+ <div class="col-lg-2"></div>
+  <div class="col-lg-8">
+    <div class="input-group">
+      <input type="text" class="form-control" name="link" id="link" placeholder="Enter a URL from Fox News to analyze..." aria-label="Enter a link to analyze..." required="true">
+      <span class="input-group-btn">
+        <button class="btn btn-secondary" type="button" id="btn-send">Go!</button>
+      </span>
+    </div>
+  </div>
+  <div class="col-lg-2"></div>
+</div>
+<br>
+
+<div class="row">
+	<div class="col-lg-2"></div>
+	<div class="col-lg-8">
+		<div id="result">
+			<h2>Top Words</h2>
+			<div id="top_words"></div>
+		</div>
+	</div>
+	<div class="col-lg-2"></div>
+</div>
+<br>
+
+<div class="row">
+	<div class="col-lg-2"></div>
+	<div class="col-lg-4">
+		<div id="keywords"></div>
+	</div>
+	<div class="col-lg-4">
+		<canvas id="myChart"></canvas>
+	</div>
+	<div class="col-lg-2"></div>
+</div>
+
+</body>
+</html>

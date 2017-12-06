@@ -1,0 +1,16 @@
+Skills practiced: 
+
+NLP Preprocessing techiniques: tokenize, stopwords removal, pos tagging, punctuation removal, lemmatizing
+Frequent words: FreqDist, CountVectorizer, TF-IDF Vectorizer
+Topic Modelling with gensim
+Clustering with K-means
+
+Website scrapping techniques:
+Processing given URL and returning extracted text
+
+Webservice methods:
+Creating web service API to consume functions to get extracted information in return
+
+Data visualization
+Drawing most frequent words in 2 important perspectives: bar plot, with words with their respective weights, and the word distribution with word cloud
+
