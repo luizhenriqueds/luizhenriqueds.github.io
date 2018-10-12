@@ -1,5 +1,5 @@
 # Data Science Projects Portfolio
-Showcase personal projects about Data Science. Some topics include:
+Showcase personal projects about Data Science. Some projects include topics such as:
 
 - Customer segmentation using clustering techniques in Machine Learning: https://tinyurl.com/y7f767uj.
 - Data Analysis of open data: Analysis of Deputies Reimbursements in Brazil: https://tinyurl.com/y7t8gjtf.
