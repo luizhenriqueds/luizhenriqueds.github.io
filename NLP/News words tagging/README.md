@@ -46,3 +46,6 @@
     artigo de notícias informado pelo usuário.
     
 #### Feita a extração dos termos relevantes, o motor de Processamento de Linguagem Natural irá retornar o resultado ao webservice que faz a comunicação entre as pontas. Por fim, o webservice irá retornar esses valores à aplicação web que o invocou e, consequentemente, mostrar ao usuário final de forma intuitiva. O código do projeto pode ser encontrado nesse endereço: https://tinyurl.com/yb5792vq.
+
+## Habilidades aplicadas
+#### Web scrapping, NLP, Webservices, Web Development, Data Representation and Visualization
