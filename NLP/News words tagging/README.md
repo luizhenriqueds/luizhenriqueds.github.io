@@ -2,24 +2,24 @@
 
 #### Este projeto visa demonstrar a utilização do Processamento de Linguagem Natural (NLP) para extração e palavras-chave de artigos de notícias de temas diversos. Nesse exemplo, iremos apresentar um projeto completo, que envolve diversas etapas de Data Science e Machine Learning, como: coleta de dados, limpeza e tratamento do texto e criação de uma interface de comunição entre a engine de PLN com aplicações externas.
 
-<center> 
-    <img src='word_cloud_nlp.png' width = '50%'/>
-</center> 
+<p align="center">
+    <img src='word_cloud_nlp.png' width = '80%'/>
+</p> 
 
 
 ## <strong>Metodologia</strong>
 #### O diagrama apresentado abaixo explica o fluxo tratado nesse projeto e a responsabilidade de cada componente dentro do mesmo.
 
-<center> 
-    <img src='News words tagging v1.png' width = '50%'/>
-</center> 
+<p align="center"> 
+    <img src='News words tagging v1.png' width = '80%'/>
+</p> 
 
 ### <strong>Web app</strong>
 #### A porta de entrada dessa ferramenta é uma aplicação web que interage com o usuário e recebe a entrada do mesmo. Essa entrada deverá ser o endereço de um artigo de notícia válido. Neste primeiro momento, somente links do site Fox News (https://www.foxnews.com/) são aceitos, uma vez que o motor de scrapping que faz a coleta dos dados só foi programado para a estrutura de páginas deste site. A próxima etapa é enviar os dados do coletados do artigo desejado e passá-los ao webservice. Por fim, a aplicação web irá apresentar ao usuário final os resultados retornados do motor de PLN. A figura abaixo ilustra a aplicação web de demonstração.
 
-<center> 
-    <img src='web_demo/demo.png' width = '50%'/>
-</center> 
+<p align="center">
+    <img src='web_demo/demo.png' width = '80%'/>
+</p> 
 
 ### <strong>Webservice</strong>
 
