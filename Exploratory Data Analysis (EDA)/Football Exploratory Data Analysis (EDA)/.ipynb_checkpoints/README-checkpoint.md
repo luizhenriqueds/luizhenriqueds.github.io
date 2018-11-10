@@ -14,7 +14,7 @@ Algumas perguntas que são respondidas nesse report:
 ## **Dataset**
 O dataset utilizado nesse projeto pode ser encontrado no seguinte endereço: https://tinyurl.com/y8d3xhms.
 
-O código desse projeto pode ser encontrado nesse **[endereço](#)** e também no meu perfil no **[Kaggle](https://tinyurl.com/yb7knhol)**.
+O código desse projeto pode ser encontrado nesse **[endereço](https://tinyurl.com/y8z5h6od)** e também no meu perfil no **[Kaggle](https://tinyurl.com/yb7knhol)**.
 
 ## **Habilidades aplicadas**
 Exploratory Data Analysis (EDA), Manipulação de dados, Reporting
