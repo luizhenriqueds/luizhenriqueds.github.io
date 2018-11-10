@@ -90,7 +90,7 @@ Para finalizar, iremos resumir os dados plotando os gastos e fornecedores mais c
 
 O objetivo desse artigo foi apresentar um projeto aplicando técnicas de análise de dados utilizando as ferramentas atuais e desfrutando da quantidade massiva de datasets disponíveis publicamente para exploração.
 
-O notebook com o código utilizado neste projeto pode ser encontrado neste [endereço](https://goo.gl/xpWVL5).
+O notebook com o código utilizado neste projeto pode ser encontrado neste [endereço](https://tinyurl.com/yag35xfa).
 
 ## Referências
 
