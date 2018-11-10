@@ -23,7 +23,7 @@ Para reproduzir essa análise, algumas ferramentas foram utilizadas. Primeiramen
 A Análise Exploratória de Dados (*Exploratory Data Analysis*, EDA) é um procedimento que visa experimentar os dados com o intuito de encontrar padrões. Para conhecer melhor os dados, efetuamos essa análise inicial. Por exemplo, iremos agrupar os valores pedidos em reembolso por categoria de despesa. A figura abaixo apresenta uma tabela com os valores totais.
 
 <p align="center">
-    <img src='image1.png' width = '50%'/>
+    <img src='image1.png' width = '80%'/>
 </p> 
 
 <p style= "text-align: center"><spam class="legenda-imagem">Figura 01 - Resumo dos gastos com reembolso por categoria</spam></p>
@@ -35,7 +35,7 @@ O gráfico da figura 02 exibe os dados agrupados por categorias e por mês. Essa
 *  Aparentemente os Deputados reduzem os gastos com viagens, porém inversamente aumentam os gastos com divulgação no final do ano.
 
 <p align="center">
-    <img src='image2.png' width = '50%'/>
+    <img src='image2.png' width = '80%'/>
 </p> 
 
 <p style= "text-align: center"><spam class="legenda-imagem">Figura 02 - Análise temporal dos pedidos de reembolso por categoria e por mês</spam></p>
@@ -43,7 +43,7 @@ O gráfico da figura 02 exibe os dados agrupados por categorias e por mês. Essa
 Muitas outras informações valiosas podem ser extraídas. Ao explorar os dados, conseguimos encontrar alguns dados estatísticos interessantes, como mostrado na figura abaixo.
 
 <p align="center">
-    <img src='image5.png' width = '50%'/>
+    <img src='image5.png' width = '80%'/>
 </p> 
 
 <p style= "text-align: center"><spam class="legenda-imagem">Figura 03 - Números extraídos dos dados de despesas com reembolso de Deputados Federais em 2017</spam></p>
@@ -55,7 +55,7 @@ Para prevermos valores para os dados, iremos utilizar a biblioteca Prophet, disp
 Baseado nas despesas do ano de 2017, conseguimos criar um modelo de aprendizado de máquina capaz de estimar os gastos para o ano de 2018. A figura 04 ilustra a **previsão**.
 
 <p align="center">
-    <img src='image3.png' width = '50%'/>
+    <img src='image3.png' width = '80%'/>
 </p> 
 
 <p style= "text-align: center"><spam class="legenda-imagem">Figura 04 - Estimando gastos com reembolso Parlamentar para 2018</spam></p>
@@ -65,7 +65,7 @@ Baseado nas despesas do ano de 2017, conseguimos criar um modelo de aprendizado 
 Ainda utilizando a biblioteca Prophet, conseguimos extrair mais algumas informações importantes. O gráfico da figura 04 indica a tendência linear positiva dos dados, demonstrando que os valores tendem a aumentar anualmente.
 
 <p align="center">
-    <img src='image4-a.png' width = '50%'/>
+    <img src='image4-a.png' width = '80%'/>
 </p> 
 
 <p style= "text-align: center"><spam class="legenda-imagem">Figura 05 - Tendência linear dos dados</spam></p>
@@ -73,7 +73,7 @@ Ainda utilizando a biblioteca Prophet, conseguimos extrair mais algumas informa�
 Além da tendência, podemos identificar a sazonalidade das despesas durante a semana. O gráfico da figura 06 indica que os dias com maior incidência de pedidos de reembolso são Segunda-feira, Terça-feira e Quarta-feira.
 
 <p align="center">
-    <img src='image4-b.png' width = '50%'/>
+    <img src='image4-b.png' width = '80%'/>
 </p> 
 
 <p style= "text-align: center"><spam class="legenda-imagem">Figura 06 - Sazonalidade dos dados por dia da semana</spam></p>
@@ -83,7 +83,7 @@ Além da tendência, podemos identificar a sazonalidade das despesas durante a s
 Para finalizar, iremos resumir os dados plotando os gastos e fornecedores mais comuns em todo o dataset. Para isso, precisamos tratar os dados textuais utilizando técnicas de PLN para realizar a limpeza do texto, facilitando a interpretação.  Feita a limpeza, criamos um gráfico de nuvem de palavras, plotando os termos ordenados por frequência (maior a letra, mais frequente é o termo). A figura abaixo ilustra os gastos mais comuns dos Parlamentares em 2017.
 
 <p align="center">
-    <img src='image6.png' width = '50%'/>
+    <img src='image6.png' width = '80%'/>
 </p> 
 
 <p style= "text-align: center"><spam class="legenda-imagem">Figura 07 - Plotando nuvem de termos mais frequentes nas despesas dos Parlamentares</spam></p>
