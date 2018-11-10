@@ -1,0 +1,982 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{}
+    \pretitle{\vspace{\droptitle}}
+  \posttitle{}
+    \author{}
+    \preauthor{}\postauthor{}
+    \date{}
+    \predate{}\postdate{}
+  
+
+\begin{document}
+
+\section{Financial Contributions to Presidential Campaigns in
+2016}\label{financial-contributions-to-presidential-campaigns-in-2016}
+
+\paragraph{In this report, we're going to explore the Financial
+Contributions to president candidates of the 2016 U.S. presidential
+election. At each individual section of this report, we're going to
+answer different types of questions, and we'll refine our assumptions as
+we advance through the analysis. Some of the questions we're going to
+answer by the end of this
+report:}\label{in-this-report-were-going-to-explore-the-financial-contributions-to-president-candidates-of-the-2016-u.s.-presidential-election.-at-each-individual-section-of-this-report-were-going-to-answer-different-types-of-questions-and-well-refine-our-assumptions-as-we-advance-through-the-analysis.-some-of-the-questions-were-going-to-answer-by-the-end-of-this-report}
+
+\begin{itemize}
+\tightlist
+\item
+  Which candidate received the most number of contributions?
+\item
+  Which candidate received the highest amount?
+\item
+  What are the most common occupations from the contributors?
+\item
+  Which location has the highest amount contributed? To which candidate?
+\item
+  How the contributions vary over time?
+\item
+  Does the contribution amount have an impact on the final result of the
+  election?
+\item
+  The profile of contributors for each candidate (top 3)
+\item
+  and more.
+\end{itemize}
+
+\begin{verbatim}
+## Classes 'tbl_df', 'tbl' and 'data.frame':    649460 obs. of  18 variables:
+##  $ comitee_id                : chr  "C00575795" "C00575795" "C00577130" "C00577130" ...
+##  $ candidate_id              : chr  "P00003392" "P00003392" "P60007168" "P60007168" ...
+##  $ candidate_name            : chr  "Clinton, Hillary Rodham" "Clinton, Hillary Rodham" "Sanders, Bernard" "Sanders, Bernard" ...
+##  $ contributor_name          : chr  "JONES TAKATA, LOUISE" "CODY, ERIN" "KEITH, SUSAN H" "LEPAGE, WILLIAM" ...
+##  $ contributor_city          : chr  "NEW YORK" "BUFFALO" "NEW YORK" "BROOKLYN" ...
+##  $ contributor_state         : chr  "NY" "NY" "NY" "NY" ...
+##  $ contributor_zip_code      : int  100162783 142221910 100133107 112381202 129011729 110402014 117771169 100124013 140520680 99999 ...
+##  $ contributor_employer      : chr  "N/A" "RUPP BAASE PFALZGRAF CUNNINGHAM LLC" "NOT EMPLOYED" "NEW YORK UNIVERSITY" ...
+##  $ contributor_occupation    : chr  "RETIRED" "ATTORNEY" "NOT EMPLOYED" "UNDERGRADUATE ADMINISTRATOR" ...
+##  $ contributor_receipt_amount: num  100 67 50 15 100 ...
+##  $ contributor_receipt_date  : chr  "15-APR-16" "24-APR-16" "06-MAR-16" "04-MAR-16" ...
+##  $ receipt_description       : chr  NA NA NA NA ...
+##  $ memo_code                 : chr  "X" "X" NA NA ...
+##  $ memo_text                 : chr  "* HILLARY VICTORY FUND" "* HILLARY VICTORY FUND" "* EARMARKED CONTRIBUTION: SEE BELOW" "* EARMARKED CONTRIBUTION: SEE BELOW" ...
+##  $ form_type                 : chr  "SA18" "SA18" "SA17A" "SA17A" ...
+##  $ file_number               : int  1091718 1091718 1077404 1077404 1091718 1077404 1077404 1091718 1091718 1146165 ...
+##  $ transaction_id            : chr  "C4732422" "C4752463" "VPF7BKZ1KR1" "VPF7BKWHRY0" ...
+##  $ election_type             : chr  "P2016" "P2016" "P2016" "P2016" ...
+##  - attr(*, "problems")=Classes 'tbl_df', 'tbl' and 'data.frame': 649463 obs. of  5 variables:
+##   ..$ row     : int  1 2 3 4 5 6 7 8 9 10 ...
+##   ..$ col     : chr  NA NA NA NA ...
+##   ..$ expected: chr  "18 columns" "18 columns" "18 columns" "18 columns" ...
+##   ..$ actual  : chr  "19 columns" "19 columns" "19 columns" "19 columns" ...
+##   ..$ file    : chr  "'P00000001-NY.csv'" "'P00000001-NY.csv'" "'P00000001-NY.csv'" "'P00000001-NY.csv'" ...
+##  - attr(*, "spec")=List of 2
+##   ..$ cols   :List of 18
+##   .. ..$ cmte_id          : list()
+##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
+##   .. ..$ cand_id          : list()
+##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
+##   .. ..$ cand_nm          : list()
+##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
+##   .. ..$ contbr_nm        : list()
+##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
+##   .. ..$ contbr_city      : list()
+##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
+##   .. ..$ contbr_st        : list()
+##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
+##   .. ..$ contbr_zip       : list()
+##   .. .. ..- attr(*, "class")= chr  "collector_integer" "collector"
+##   .. ..$ contbr_employer  : list()
+##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
+##   .. ..$ contbr_occupation: list()
+##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
+##   .. ..$ contb_receipt_amt: list()
+##   .. .. ..- attr(*, "class")= chr  "collector_double" "collector"
+##   .. ..$ contb_receipt_dt : list()
+##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
+##   .. ..$ receipt_desc     : list()
+##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
+##   .. ..$ memo_cd          : list()
+##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
+##   .. ..$ memo_text        : list()
+##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
+##   .. ..$ form_tp          : list()
+##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
+##   .. ..$ file_num         : list()
+##   .. .. ..- attr(*, "class")= chr  "collector_integer" "collector"
+##   .. ..$ tran_id          : list()
+##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
+##   .. ..$ election_tp      : list()
+##   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
+##   ..$ default: list()
+##   .. ..- attr(*, "class")= chr  "collector_guess" "collector"
+##   ..- attr(*, "class")= chr "col_spec"
+\end{verbatim}
+
+\begin{verbatim}
+## # A tibble: 6 x 18
+##   comitee_id candidate_id candidate_name contributor_name contributor_city
+##   <chr>      <chr>        <chr>          <chr>            <chr>           
+## 1 C00575795  P00003392    Clinton, Hill~ JONES TAKATA, L~ NEW YORK        
+## 2 C00575795  P00003392    Clinton, Hill~ CODY, ERIN       BUFFALO         
+## 3 C00577130  P60007168    Sanders, Bern~ KEITH, SUSAN H   NEW YORK        
+## 4 C00577130  P60007168    Sanders, Bern~ LEPAGE, WILLIAM  BROOKLYN        
+## 5 C00575795  P00003392    Clinton, Hill~ BIELAT, VEDORA   PLATTSBURGH     
+## 6 C00577130  P60007168    Sanders, Bern~ LIEBER, MICHAEL  NEW HYDE PARK   
+## # ... with 13 more variables: contributor_state <chr>,
+## #   contributor_zip_code <int>, contributor_employer <chr>,
+## #   contributor_occupation <chr>, contributor_receipt_amount <dbl>,
+## #   contributor_receipt_date <chr>, receipt_description <chr>,
+## #   memo_code <chr>, memo_text <chr>, form_type <chr>, file_number <int>,
+## #   transaction_id <chr>, election_type <chr>
+\end{verbatim}
+
+\section{Data Wrangling \&
+Manipulation}\label{data-wrangling-manipulation}
+
+\paragraph{At this section, we're going to perform some data
+manipulation in order to transform our dataset in a cleaner, more
+informative data
+structure.}\label{at-this-section-were-going-to-perform-some-data-manipulation-in-order-to-transform-our-dataset-in-a-cleaner-more-informative-data-structure.}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Converting string dates to date objects to be able to perform date operations}
+\NormalTok{financial_contrib}\OperatorTok{$}\NormalTok{contributor_receipt_date <-}\StringTok{ }\KeywordTok{parse_date_time}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ financial_contrib}\OperatorTok{$}\NormalTok{contributor_receipt_date,}
+                \DataTypeTok{orders =} \KeywordTok{c}\NormalTok{(}\StringTok{"%d-%b-%y"}\NormalTok{))}
+
+\CommentTok{# Extracting day from date}
+\NormalTok{financial_contrib}\OperatorTok{$}\NormalTok{receipt_day <-}\StringTok{ }\KeywordTok{format}\NormalTok{(financial_contrib}\OperatorTok{$}\NormalTok{contributor_receipt_date, }\StringTok{"%d"}\NormalTok{)}
+
+\CommentTok{# Extracting month from date}
+\NormalTok{financial_contrib}\OperatorTok{$}\NormalTok{receipt_month <-}\StringTok{ }\KeywordTok{format}\NormalTok{(financial_contrib}\OperatorTok{$}\NormalTok{contributor_receipt_date, }\StringTok{"%m"}\NormalTok{)}
+
+\CommentTok{# Extracting year from date}
+\NormalTok{financial_contrib}\OperatorTok{$}\NormalTok{receipt_year <-}\StringTok{ }\KeywordTok{format}\NormalTok{(financial_contrib}\OperatorTok{$}\NormalTok{contributor_receipt_date, }\StringTok{"%Y"}\NormalTok{)}
+
+\CommentTok{# Converting contribution amount to double}
+\NormalTok{financial_contrib}\OperatorTok{$}\NormalTok{contributor_receipt_amount <-}\StringTok{ }\KeywordTok{as.double}\NormalTok{(financial_contrib}\OperatorTok{$}\NormalTok{contributor_receipt_amount)}
+
+\CommentTok{# Converting file number to integer}
+\NormalTok{financial_contrib}\OperatorTok{$}\NormalTok{file_number <-}\StringTok{ }\KeywordTok{as.numeric}\NormalTok{(financial_contrib}\OperatorTok{$}\NormalTok{file_number)}
+
+\CommentTok{# Converting occupation to factor}
+\NormalTok{financial_contrib}\OperatorTok{$}\NormalTok{contributor_occupation <-}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(financial_contrib}\OperatorTok{$}\NormalTok{contributor_occupation)}
+
+\CommentTok{# Converting city to factor}
+\NormalTok{financial_contrib}\OperatorTok{$}\NormalTok{contributor_city <-}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(financial_contrib}\OperatorTok{$}\NormalTok{contributor_city)}
+
+\CommentTok{# Converting election type to factor}
+\NormalTok{financial_contrib}\OperatorTok{$}\NormalTok{election_type <-}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(financial_contrib}\OperatorTok{$}\NormalTok{election_type)}
+
+\CommentTok{# Converting employer to factor}
+\NormalTok{financial_contrib}\OperatorTok{$}\NormalTok{contributor_employer <-}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(financial_contrib}\OperatorTok{$}\NormalTok{contributor_employer)}
+
+\CommentTok{# Converting zipcode to string}
+\NormalTok{financial_contrib}\OperatorTok{$}\NormalTok{contributor_zip_code <-}\StringTok{ }\KeywordTok{as.character}\NormalTok{(financial_contrib}\OperatorTok{$}\NormalTok{contributor_zip_code)}
+
+\CommentTok{# Recover unique cities to geocode}
+\NormalTok{unique_cities_df <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{city =} \KeywordTok{unique}\NormalTok{(financial_contrib}\OperatorTok{$}\NormalTok{contributor_city))}
+\NormalTok{unique_cities_df}\OperatorTok{$}\NormalTok{city <-}\StringTok{ }\KeywordTok{as.character}\NormalTok{(unique_cities_df}\OperatorTok{$}\NormalTok{city)}
+
+\CommentTok{# Getting the name of unique locations}
+\NormalTok{unique_cities_df <-}\StringTok{ }\KeywordTok{na.omit}\NormalTok{(unique_cities_df)}
+\end{Highlighting}
+\end{Shaded}
+
+\paragraph{Uncomment this chunk to download geolocation
+data}\label{uncomment-this-chunk-to-download-geolocation-data}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Calling geolocation service to obtain lat and lon }
+\CommentTok{#geocode_output_df <- geocode(unique_cities_df$city,}
+ \CommentTok{#   output = 'latlona',}
+ \CommentTok{#   source = 'dsk',}
+ \CommentTok{#   messaging = FALSE,}
+ \CommentTok{#   sensor = FALSE)}
+
+\CommentTok{# Changing the 'address' column name to match the original dataframe in order to join the data}
+\CommentTok{#colnames(geocode_output_df)[which(names(geocode_output_df) == "address")] <- "contributor_city"}
+
+\CommentTok{# Omiting NA values}
+\CommentTok{#geocode_output_df <- na.omit(geocode_output_df)}
+\end{Highlighting}
+\end{Shaded}
+
+\paragraph{\texorpdfstring{Joining dataframes by
+\texttt{contributur\_city} key. Uncomment this chunk to join dataframes
+with the geolocation
+data}{Joining dataframes by contributur\_city key. Uncomment this chunk to join dataframes with the geolocation data}}\label{joining-dataframes-by-contributur_city-key.-uncomment-this-chunk-to-join-dataframes-with-the-geolocation-data}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Joining original dataset with geolocation dataframe by 'contributor_city' key}
+\CommentTok{#financial_contrib <- left_join(financial_contrib, geocode_output_df, by='contributor_city')}
+
+\CommentTok{# Appending the newly created columns to the original ones }
+\CommentTok{#new_columns <- append(columns_to_select, c('receipt_day', 'receipt_month', 'receipt_year',}
+\CommentTok{#                                                     'lon', 'lat'))}
+
+\CommentTok{# Selecting the columns of interest}
+\CommentTok{#financial_contrib <- select(financial_contrib, new_columns)}
+
+\CommentTok{# Saving the transformed dataset to avoid iterating over all this process again}
+\CommentTok{#write.csv(financial_contrib, 'financial_contributions.csv')}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Loading the transformed
+dataset}\label{loading-the-transformed-dataset}
+
+\paragraph{Disclaimer: In order to make the process faster, I'll provide
+the transformed dataset along with my code. If you uncomment the 2
+previous chunk above, the result will be the same, but it will take a
+long time to get the geocode data from Google service. As I already had
+to go through this process to compile this report, I am providing the
+full
+dataset.}\label{disclaimer-in-order-to-make-the-process-faster-ill-provide-the-transformed-dataset-along-with-my-code.-if-you-uncomment-the-2-previous-chunk-above-the-result-will-be-the-same-but-it-will-take-a-long-time-to-get-the-geocode-data-from-google-service.-as-i-already-had-to-go-through-this-process-to-compile-this-report-i-am-providing-the-full-dataset.}
+
+\paragraph{Loading the transformed data set and extracting a sample from
+it, considering the original size of the dataset and performance
+issues.}\label{loading-the-transformed-data-set-and-extracting-a-sample-from-it-considering-the-original-size-of-the-dataset-and-performance-issues.}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Loading the transformed dataset to explore on the next sessions}
+\NormalTok{financial_contributions_df <-}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{'financial_contributions.csv'}\NormalTok{, }\DataTypeTok{as.is =} \OtherTok{TRUE}\NormalTok{)}
+
+\CommentTok{# Setting seef for reproducibility}
+\KeywordTok{set.seed}\NormalTok{(}\DecValTok{1024}\NormalTok{)}
+
+\CommentTok{# Making a sample to address performance issues}
+\NormalTok{sample_financial_dataset <-}\StringTok{ }\NormalTok{financial_contributions_df[}\KeywordTok{sample}\NormalTok{(}\KeywordTok{length}\NormalTok{(financial_contributions_df}\OperatorTok{$}\NormalTok{contributor_receipt_amount), }\DecValTok{20000}\NormalTok{), ]}
+
+\CommentTok{# Taking a look at the top records of the transformed dataset}
+\KeywordTok{head}\NormalTok{(sample_financial_dataset)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##             X comitee_id candidate_id          candidate_name
+## 141641 141641  C00575795    P00003392 Clinton, Hillary Rodham
+## 641428 641428  C00575795    P00003392 Clinton, Hillary Rodham
+## 226312 226312  C00575795    P00003392 Clinton, Hillary Rodham
+## 247474 247474  C00575795    P00003392 Clinton, Hillary Rodham
+## 13630   13630  C00575795    P00003392 Clinton, Hillary Rodham
+## 486914 486914  C00575795    P00003392 Clinton, Hillary Rodham
+##           contributor_name contributor_city contributor_state
+## 141641      HERKALO, KEITH             PERU                NY
+## 641428        RIGBY, PETER         NEW YORK                NY
+## 226312         COHEN, NOEL         NEW YORK                NY
+## 247474        LAPMAN, LISA         NEW YORK                NY
+## 13630         WIZMUR, DINA         NEW YORK                NY
+## 486914 DAVIS-FARAGE, KAREN         NEW YORK                NY
+##        contributor_zip_code             contributor_employer
+## 141641            129725101                              N/A
+## 641428            100246514 STANHOPE REED RIGBY ADVISORY LLC
+## 226312            100166416                              N/A
+## 247474            100656465         MONTEFIORE HEALTH SYSTEM
+## 13630             100237103  INDEPENDENCE HEALTH CARE SYSTEM
+## 486914            100241100            POLE POSITION RACEWAY
+##        contributor_occupation contributor_receipt_amount
+## 141641                RETIRED                         50
+## 641428             CONSULTANT                        100
+## 226312                RETIRED                         25
+## 247474              PHYSICIAN                         25
+## 13630                ATTORNEY                         25
+## 486914                  OWNER                        100
+##        contributor_receipt_date receipt_description memo_code memo_text
+## 141641               2016-05-12                <NA>      <NA>      <NA>
+## 641428               2016-11-06                <NA>      <NA>      <NA>
+## 226312               2016-05-11                <NA>      <NA>      <NA>
+## 247474               2015-10-13                <NA>      <NA>      <NA>
+## 13630                2016-08-29                <NA>      <NA>      <NA>
+## 486914               2016-11-05                <NA>      <NA>      <NA>
+##        form_type file_number transaction_id election_type receipt_day
+## 141641     SA17A     1091720       C4962760         P2016          12
+## 641428     SA17A     1133832      C15640955         G2016           6
+## 226312     SA17A     1091720       C4958526         P2016          11
+## 247474     SA17A     1081052       C1356796         P2016          13
+## 13630      SA17A     1126762       C9682962         G2016          29
+## 486914     SA17A     1133832      C15486739         G2016           5
+##        receipt_month receipt_year       lon       lat
+## 141641             5         2016 -76.00000 -10.00000
+## 641428            11         2016 -74.00597  40.71427
+## 226312             5         2016 -74.00597  40.71427
+## 247474            10         2015 -74.00597  40.71427
+## 13630              8         2016 -74.00597  40.71427
+## 486914            11         2016 -74.00597  40.71427
+\end{verbatim}
+
+\section{Data visualization}\label{data-visualization}
+
+\paragraph{\texorpdfstring{The dataset we are going to explore provides
+data about individual financial contributions to presidentials campaigns
+of 2016 U.S. presidential election. We are going to start by analysing
+the structure of some variables of interest such as
+\texttt{contributor\_receipt\_amount}.}{The dataset we are going to explore provides data about individual financial contributions to presidentials campaigns of 2016 U.S. presidential election. We are going to start by analysing the structure of some variables of interest such as contributor\_receipt\_amount.}}\label{the-dataset-we-are-going-to-explore-provides-data-about-individual-financial-contributions-to-presidentials-campaigns-of-2016-u.s.-presidential-election.-we-are-going-to-start-by-analysing-the-structure-of-some-variables-of-interest-such-as-contributor_receipt_amount.}
+
+\subsection{Univariate Plots Section}\label{univariate-plots-section}
+
+\paragraph{Summary of the contribution amounts. We notice that there is
+a negative value (which may indicate refunds made to some reported
+individuals, as stated on the dataset documentation) and the Max value
+is clearly an extreme
+value.}\label{summary-of-the-contribution-amounts.-we-notice-that-there-is-a-negative-value-which-may-indicate-refunds-made-to-some-reported-individuals-as-stated-on-the-dataset-documentation-and-the-max-value-is-clearly-an-extreme-value.}
+
+\begin{verbatim}
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+## -5400.0    15.0    27.0   139.6   100.0  5400.0
+\end{verbatim}
+
+\paragraph{\texorpdfstring{Let's explore the datetime data that we
+extracted from the \texttt{contributor\_receipt\_date} feature. That
+step was very important because now we can have a sense of how the data
+is distributed over time, which it would't be possible by the provided
+date format. In the next section, we're going to explore the summary
+statistics for contributions by day and month. It wouldn't make sense
+for us to analyze year data, since most of the contributions account for
+the election year itself (2016). The cell bellow confirm this
+assumption.}{Let's explore the datetime data that we extracted from the contributor\_receipt\_date feature. That step was very important because now we can have a sense of how the data is distributed over time, which it would't be possible by the provided date format. In the next section, we're going to explore the summary statistics for contributions by day and month. It wouldn't make sense for us to analyze year data, since most of the contributions account for the election year itself (2016). The cell bellow confirm this assumption.}}\label{lets-explore-the-datetime-data-that-we-extracted-from-the-contributor_receipt_date-feature.-that-step-was-very-important-because-now-we-can-have-a-sense-of-how-the-data-is-distributed-over-time-which-it-wouldt-be-possible-by-the-provided-date-format.-in-the-next-section-were-going-to-explore-the-summary-statistics-for-contributions-by-day-and-month.-it-wouldnt-make-sense-for-us-to-analyze-year-data-since-most-of-the-contributions-account-for-the-election-year-itself-2016.-the-cell-bellow-confirm-this-assumption.}
+
+\begin{verbatim}
+## 
+##  2015  2016 
+##  1848 18152
+\end{verbatim}
+
+\paragraph{Counting contributions made at each day of the month. Does
+the number of contribution increase as we get closer to the end of the
+month? It seems to be the
+case.}\label{counting-contributions-made-at-each-day-of-the-month.-does-the-number-of-contribution-increase-as-we-get-closer-to-the-end-of-the-month-it-seems-to-be-the-case.}
+
+\begin{verbatim}
+## 
+##    1    2    3    4    5    6    7    8    9   10   11   12   13   14   15 
+##  598  617  529  668  657  718  694  817  729  603  506  610  505  666  555 
+##   16   17   18   19   20   21   22   23   24   25   26   27   28   29   30 
+##  551  481  533  632  592  606  492  555  502  543  748  646  823 1073  959 
+##   31 
+##  792
+\end{verbatim}
+
+\paragraph{We can apply the same counting to each month. For the months,
+it seems it's a more spread distribution, having a lot of contributions
+on MARCH, APRIL, SEPTEMBER, and
+OCTOBER.}\label{we-can-apply-the-same-counting-to-each-month.-for-the-months-it-seems-its-a-more-spread-distribution-having-a-lot-of-contributions-on-march-april-september-and-october.}
+
+\begin{verbatim}
+## 
+##    1    2    3    4    5    6    7    8    9   10   11   12 
+##  636 1396 1959 1998 1463 1417 1794 1657 2340 3230 1632  478
+\end{verbatim}
+
+\begin{verbatim}
+## [1] -5400  5400
+\end{verbatim}
+
+\includegraphics{udacity_explore_and_summarize_data_files/figure-latex/Univariate_Plots-1.pdf}
+
+\paragraph{\texorpdfstring{The data for the reported contribution amount
+is very right skewed. Let's apply a \texttt{log10} transformation to get
+it more like a normal distribution. In fact, the most common amounts
+contributed are shown
+below.}{The data for the reported contribution amount is very right skewed. Let's apply a log10 transformation to get it more like a normal distribution. In fact, the most common amounts contributed are shown below.}}\label{the-data-for-the-reported-contribution-amount-is-very-right-skewed.-lets-apply-a-log10-transformation-to-get-it-more-like-a-normal-distribution.-in-fact-the-most-common-amounts-contributed-are-shown-below.}
+
+\begin{verbatim}
+## 
+##   25   50  100   10    5   15   27  250 2700   19 
+## 2976 2217 2080 1739 1299  910  863  785  417  364
+\end{verbatim}
+
+\paragraph{Now, let's do a log10 transformation to reshaped the data
+distribution to look like a normal
+curve.}\label{now-lets-do-a-log10-transformation-to-reshaped-the-data-distribution-to-look-like-a-normal-curve.}
+
+\includegraphics{udacity_explore_and_summarize_data_files/figure-latex/unnamed-chunk-8-1.pdf}
+
+\paragraph{\texorpdfstring{Note that the data for
+\texttt{contributor\_receipt\_amount} is much more close to a normal
+distribution than before. Let's continue our analysis by exploring
+contributions to individual
+candidates.}{Note that the data for contributor\_receipt\_amount is much more close to a normal distribution than before. Let's continue our analysis by exploring contributions to individual candidates.}}\label{note-that-the-data-for-contributor_receipt_amount-is-much-more-close-to-a-normal-distribution-than-before.-lets-continue-our-analysis-by-exploring-contributions-to-individual-candidates.}
+
+\paragraph{\texorpdfstring{First, let's take a look at the
+\texttt{table} command to check the candidates which received the most
+individual
+contributions.}{First, let's take a look at the table command to check the candidates which received the most individual contributions.}}\label{first-lets-take-a-look-at-the-table-command-to-check-the-candidates-which-received-the-most-individual-contributions.}
+
+\begin{verbatim}
+## 
+##                 Bush, Jeb       Carson, Benjamin S. 
+##                        81                       196 
+##  Christie, Christopher J.   Clinton, Hillary Rodham 
+##                         9                     12350 
+## Cruz, Rafael Edward 'Ted'            Fiorina, Carly 
+##                       506                        31 
+##        Graham, Lindsey O.            Huckabee, Mike 
+##                        11                         7 
+##             Jindal, Bobby             Johnson, Gary 
+##                         2                        31 
+##           Kasich, John R.          Lessig, Lawrence 
+##                        49                         4 
+##            McMullin, Evan   O'Malley, Martin Joseph 
+##                         4                        11 
+##         Pataki, George E.                Paul, Rand 
+##                         2                        36 
+##    Perry, James R. (Rick)              Rubio, Marco 
+##                         1                       154 
+##          Sanders, Bernard               Stein, Jill 
+##                      5355                        35 
+##          Trump, Donald J.             Walker, Scott 
+##                      1112                        10 
+##     Webb, James Henry Jr. 
+##                         3
+\end{verbatim}
+
+\paragraph{Plotting the percentage of contributions to each presidential
+candidate.}\label{plotting-the-percentage-of-contributions-to-each-presidential-candidate.}
+
+\includegraphics{udacity_explore_and_summarize_data_files/figure-latex/unnamed-chunk-10-1.pdf}
+
+\paragraph{\texorpdfstring{The plot above shows us that Hillary Clinton,
+Bernard Sanders , and Donald Trump received the most
+contributions.}{The plot above shows us that Hillary Clinton,  Bernard Sanders , and Donald Trump received the most contributions.}}\label{the-plot-above-shows-us-that-hillary-clinton-bernard-sanders-and-donald-trump-received-the-most-contributions.}
+
+\paragraph{Taking a similar approach, let's see the distribution of the
+occupation of each individual contributor. First, let's take a look at
+the table command to get a better sense of this
+variable.}\label{taking-a-similar-approach-lets-see-the-distribution-of-the-occupation-of-each-individual-contributor.-first-lets-take-a-look-at-the-table-command-to-get-a-better-sense-of-this-variable.}
+
+\begin{verbatim}
+## [1] 3656
+\end{verbatim}
+
+\paragraph{\texorpdfstring{Considering we have over 3,500 unique
+occupations for financial contributors, let's just have a pick at the
+most commom positions. In order to do this, lets order the
+\texttt{table} function with \texttt{decreasing} parameter as
+\texttt{TRUE} and passing the value 10 to the \texttt{head} function to
+get the top 10
+values.}{Considering we have over 3,500 unique occupations for financial contributors, let's just have a pick at the most commom positions. In order to do this, lets order the table function with decreasing parameter as TRUE and passing the value 10 to the head function to get the top 10 values.}}\label{considering-we-have-over-3500-unique-occupations-for-financial-contributors-lets-just-have-a-pick-at-the-most-commom-positions.-in-order-to-do-this-lets-order-the-table-function-with-decreasing-parameter-as-true-and-passing-the-value-10-to-the-head-function-to-get-the-top-10-values.}
+
+\begin{verbatim}
+## 
+##               RETIRED          NOT EMPLOYED              ATTORNEY 
+##                  3011                  1467                   756 
+## INFORMATION REQUESTED               TEACHER             PROFESSOR 
+##                   497                   443                   332 
+##             PHYSICIAN                LAWYER            CONSULTANT 
+##                   317                   300                   284 
+##                WRITER 
+##                   254
+\end{verbatim}
+
+\paragraph{Filtering the dataframe to display only the data for the top
+10 occupations. This is done in order to make a readable plot.
+Otherwise, it would be impossible to visualize the
+data.}\label{filtering-the-dataframe-to-display-only-the-data-for-the-top-10-occupations.-this-is-done-in-order-to-make-a-readable-plot.-otherwise-it-would-be-impossible-to-visualize-the-data.}
+
+\includegraphics{udacity_explore_and_summarize_data_files/figure-latex/unnamed-chunk-13-1.pdf}
+
+\paragraph{This plot indicates that RETIRED peolple are the ones with
+the most contributions to the
+presidential}\label{this-plot-indicates-that-retired-peolple-are-the-ones-with-the-most-contributions-to-the-presidential}
+
+\subsection{Univariate Analysis}\label{univariate-analysis}
+
+\paragraph{We are done exploring one variable. Not, let's provide a
+quick summary of what's been observed through this section of the
+analysis, which is just the starting point of a more elaborated
+exploration coming on the next
+sections.}\label{we-are-done-exploring-one-variable.-not-lets-provide-a-quick-summary-of-whats-been-observed-through-this-section-of-the-analysis-which-is-just-the-starting-point-of-a-more-elaborated-exploration-coming-on-the-next-sections.}
+
+\paragraph{\texorpdfstring{This is an example of a tidy dataset, where
+each observation is a row and each variable forms a column in the
+collection of data. The first step we took at the data wrangling and
+manipulation was to trasnform and clean the original dataset. We
+converted some features to \texttt{factor}, \texttt{integer}, and
+\texttt{datetime}. These transformations were performed in order to
+create a more concise dataset and prepare it to future data exploration
+phases. Other than that, we managed to create 5 new features from the
+original dataset to add more value to our observations. We are going to
+explain in more details below the transformations executed for some of
+the most important features we're going to
+use.}{This is an example of a tidy dataset, where each observation is a row and each variable forms a column in the collection of data. The first step we took at the data wrangling and manipulation was to trasnform and clean the original dataset. We converted some features to factor, integer, and datetime. These transformations were performed in order to create a more concise dataset and prepare it to future data exploration phases. Other than that, we managed to create 5 new features from the original dataset to add more value to our observations. We are going to explain in more details below the transformations executed for some of the most important features we're going to use.}}\label{this-is-an-example-of-a-tidy-dataset-where-each-observation-is-a-row-and-each-variable-forms-a-column-in-the-collection-of-data.-the-first-step-we-took-at-the-data-wrangling-and-manipulation-was-to-trasnform-and-clean-the-original-dataset.-we-converted-some-features-to-factor-integer-and-datetime.-these-transformations-were-performed-in-order-to-create-a-more-concise-dataset-and-prepare-it-to-future-data-exploration-phases.-other-than-that-we-managed-to-create-5-new-features-from-the-original-dataset-to-add-more-value-to-our-observations.-we-are-going-to-explain-in-more-details-below-the-transformations-executed-for-some-of-the-most-important-features-were-going-to-use.}
+
+\paragraph{\texorpdfstring{The data distribution for the \texttt{amount}
+variable is highly right skewed. Hence, a \texttt{log10} transformation
+has been applied to transform it to a normal-like
+distribution.}{The data distribution for the amount variable is highly right skewed. Hence, a log10 transformation has been applied to transform it to a normal-like distribution.}}\label{the-data-distribution-for-the-amount-variable-is-highly-right-skewed.-hence-a-log10-transformation-has-been-applied-to-transform-it-to-a-normal-like-distribution.}
+
+\paragraph{There are several features of
+interest:}\label{there-are-several-features-of-interest}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{candidate\_name}: the name of the candidate as a factor
+  variable will be really useful in this analysis in order to group the
+  financial contributions by candidate and see how each candidate
+  compare with each other in terms of amount received.
+\item
+  \texttt{contributor\_city}: the location of the person who made the
+  contribution. We are going to use this feature to segment the amount
+  contributed by each candidate by location, to undertstand which
+  presidential performed better in which location.
+\item
+  \texttt{occupation}: to map the most common occupation from the
+  contributors.
+\item
+  \texttt{contributor\_receipt\_amount}: the amount contributed, perhaps
+  the most important feature to be analyzed, once will provide us the
+  opportunity to aggregate the data by a single number (\$), and
+  elaborate our assumptions.
+\item
+  \texttt{contributor\_receipt\_date}: this feature is very important
+  because it allowed us to create new variables to understand the data
+  movement through time. With this information, we can plot timeseries
+  analysis and understand how the values change over time. It's
+  important to note that this feature didn't came in a usable format.
+  For this reason, we had to apply some transformations on the data
+  manipulation section to make it useful.
+\item
+  \texttt{lat} and \texttt{lon}: These two are two features extracted
+  from the original location the dataset provided. With this
+  information, we're now able to perform map operations, like plotting
+  the aggregated values on a map.
+\end{itemize}
+
+\paragraph{\texorpdfstring{At the end of our transformations, we saved
+the newly formatted dataframe into a new csv dataset. We did this to
+preserve our operations and avoing doing all the steps once again. Other
+than that, we created the variables \texttt{lat} and \texttt{lon}
+calling the \texttt{geocode()} function from the \texttt{ggmap} library.
+This call itself takes a long time to complete (because each location is
+one request to the Google Service Location API). Therefore, we don't
+want to perform this step again everytime we run this
+report.}{At the end of our transformations, we saved the newly formatted dataframe into a new csv dataset. We did this to preserve our operations and avoing doing all the steps once again. Other than that, we created the variables lat and lon calling the geocode() function from the ggmap library. This call itself takes a long time to complete (because each location is one request to the Google Service Location API). Therefore, we don't want to perform this step again everytime we run this report.}}\label{at-the-end-of-our-transformations-we-saved-the-newly-formatted-dataframe-into-a-new-csv-dataset.-we-did-this-to-preserve-our-operations-and-avoing-doing-all-the-steps-once-again.-other-than-that-we-created-the-variables-lat-and-lon-calling-the-geocode-function-from-the-ggmap-library.-this-call-itself-takes-a-long-time-to-complete-because-each-location-is-one-request-to-the-google-service-location-api.-therefore-we-dont-want-to-perform-this-step-again-everytime-we-run-this-report.}
+
+\section{Bivariate Plots Section}\label{bivariate-plots-section}
+
+\paragraph{In this section, we're going to summarize financial
+contributions by candidate, location and occupation. The first step is
+to group the values by these variables forementioned. To create
+effective and attractive plots, we're going to limit the aggregated data
+to the top 5
+results.}\label{in-this-section-were-going-to-summarize-financial-contributions-by-candidate-location-and-occupation.-the-first-step-is-to-group-the-values-by-these-variables-forementioned.-to-create-effective-and-attractive-plots-were-going-to-limit-the-aggregated-data-to-the-top-5-results.}
+
+\includegraphics{udacity_explore_and_summarize_data_files/figure-latex/Bivariate_Plots-1.pdf}
+
+\paragraph{Looking at the graph above, we identified that the profile of
+the people who contributed the most is a Retired person who lives in New
+York and contributed to Hillary Clinton's
+campaign.}\label{looking-at-the-graph-above-we-identified-that-the-profile-of-the-people-who-contributed-the-most-is-a-retired-person-who-lives-in-new-york-and-contributed-to-hillary-clintons-campaign.}
+
+\subsubsection{Boxplots}\label{boxplots}
+
+\paragraph{Let's group the data by candidate and filter out the top 3
+presidentials with the most contributions amount in order to make easier
+to read the visualizations. In this next section, we're going to prepare
+the data to be plotted on the next section using
+boxplots.}\label{lets-group-the-data-by-candidate-and-filter-out-the-top-3-presidentials-with-the-most-contributions-amount-in-order-to-make-easier-to-read-the-visualizations.-in-this-next-section-were-going-to-prepare-the-data-to-be-plotted-on-the-next-section-using-boxplots.}
+
+\paragraph{Now that we grouped the data by candidate and filtered the
+top 3, we're going to create boxplots to understand the distributions
+for each of the presidentials. Boxplots help us visualize how the data
+is distributed, the 25\%, 50\% (median), 75\%, Intequartile Range of the
+data and extreme values
+(outliers).}\label{now-that-we-grouped-the-data-by-candidate-and-filtered-the-top-3-were-going-to-create-boxplots-to-understand-the-distributions-for-each-of-the-presidentials.-boxplots-help-us-visualize-how-the-data-is-distributed-the-25-50-median-75-intequartile-range-of-the-data-and-extreme-values-outliers.}
+
+\paragraph{Let's visualize the boxplots by month for Hillary
+Clinton.}\label{lets-visualize-the-boxplots-by-month-for-hillary-clinton.}
+
+\begin{verbatim}
+## [1] -2700  2700
+\end{verbatim}
+
+\includegraphics{udacity_explore_and_summarize_data_files/figure-latex/unnamed-chunk-15-1.pdf}
+
+\paragraph{It's interesting to see how there are a lot of outliers for
+some months for Hillary (which could indicate ups and downs in her
+campaign), like September and October. The median value is greater for
+January and
+December.}\label{its-interesting-to-see-how-there-are-a-lot-of-outliers-for-some-months-for-hillary-which-could-indicate-ups-and-downs-in-her-campaign-like-september-and-october.-the-median-value-is-greater-for-january-and-december.}
+
+\paragraph{Now let's visualize the boxplots by month for Bernard
+Sanders.}\label{now-lets-visualize-the-boxplots-by-month-for-bernard-sanders.}
+
+\begin{verbatim}
+## [1] -2000  2700
+\end{verbatim}
+
+\includegraphics{udacity_explore_and_summarize_data_files/figure-latex/unnamed-chunk-16-1.pdf}
+
+\paragraph{Sanders doesn't have as many outliers as Hillary, and the
+range of the financial contributions is also low compared to the other
+2. Other than that, he received most of his highest contributions on
+August and
+September.}\label{sanders-doesnt-have-as-many-outliers-as-hillary-and-the-range-of-the-financial-contributions-is-also-low-compared-to-the-other-2.-other-than-that-he-received-most-of-his-highest-contributions-on-august-and-september.}
+
+\paragraph{Finally, Let's visualize the boxplots by month for Donald
+Trump.}\label{finally-lets-visualize-the-boxplots-by-month-for-donald-trump.}
+
+\begin{verbatim}
+## [1] -400.00 2853.18
+\end{verbatim}
+
+\includegraphics{udacity_explore_and_summarize_data_files/figure-latex/unnamed-chunk-17-1.pdf}
+
+\paragraph{\texorpdfstring{There aren't many outliers for Trump as well.
+However, the range of his contribution is very high compared to others,
+and he received a huge amount of donations on May. Let's investigate a
+little what happened on this month to try to understand a bit more about
+this data. If we look at the news (\url{https://tinyurl.com/olpm6ur},
+\url{https://tinyurl.com/y9culvkw}, \url{https://tinyurl.com/y9z9gjjy}),
+a couple of things
+happened:}{There aren't many outliers for Trump as well. However, the range of his contribution is very high compared to others, and he received a huge amount of donations on May. Let's investigate a little what happened on this month to try to understand a bit more about this data. If we look at the news (https://tinyurl.com/olpm6ur, https://tinyurl.com/y9culvkw, https://tinyurl.com/y9z9gjjy), a couple of things happened:}}\label{there-arent-many-outliers-for-trump-as-well.-however-the-range-of-his-contribution-is-very-high-compared-to-others-and-he-received-a-huge-amount-of-donations-on-may.-lets-investigate-a-little-what-happened-on-this-month-to-try-to-understand-a-bit-more-about-this-data.-if-we-look-at-the-news-httpstinyurl.comolpm6ur-httpstinyurl.comy9culvkw-httpstinyurl.comy9z9gjjy-a-couple-of-things-happened}
+
+\begin{itemize}
+\tightlist
+\item
+  Some candidates withdraw their presidency campaigns such as John
+  Kasich and Ted Cruz. Speech by Cruz in his concession: ``From the
+  beginning I've said that I would continue on as long as there was a
+  viable path to victory. Tonight I'm sorry to say it appears that path
+  has been foreclosed.''
+\item
+  Nationally televised presidential debates
+\item
+  Trump crosses delegate threshold
+\end{itemize}
+
+\paragraph{Now that we analyzed the data distribution by month, let's
+explore each candidate overall distribution to understand a little more
+of their contributions
+received.}\label{now-that-we-analyzed-the-data-distribution-by-month-lets-explore-each-candidate-overall-distribution-to-understand-a-little-more-of-their-contributions-received.}
+
+\includegraphics{udacity_explore_and_summarize_data_files/figure-latex/unnamed-chunk-18-1.pdf}
+
+\paragraph{Investigating each candidate's distribution, we can confirm
+what has been observed before. Hillary's distribution has several
+outlier points. Sanders' has a very low range of values, and Trump's has
+the greatest median value. Even though Hillary received the highest
+overall amount, it seems that values contributued to Donald Trump are
+greater. From this data we could draw some
+assumptions:}\label{investigating-each-candidates-distribution-we-can-confirm-what-has-been-observed-before.-hillarys-distribution-has-several-outlier-points.-sanders-has-a-very-low-range-of-values-and-trumps-has-the-greatest-median-value.-even-though-hillary-received-the-highest-overall-amount-it-seems-that-values-contributued-to-donald-trump-are-greater.-from-this-data-we-could-draw-some-assumptions}
+
+\begin{itemize}
+\tightlist
+\item
+  This might be an indication of engagement from his supporters
+\item
+  Perhaps better financial condition overall of his audience\\
+\end{itemize}
+
+\paragraph{To answer these questions, we would need additional data
+about the contributors (which we lack on this dataset). Additionally,
+this analysis is out of the scope of this
+report.}\label{to-answer-these-questions-we-would-need-additional-data-about-the-contributors-which-we-lack-on-this-dataset.-additionally-this-analysis-is-out-of-the-scope-of-this-report.}
+
+\subsubsection{Time-series Analysis}\label{time-series-analysis}
+
+\paragraph{Now that we aggregated by candidate, occupation and location,
+let's analyze how the donations change over time. This time series
+analysis is possible because we pre-processed the dataset to extract the
+date information from the provided raw, unformatted date
+string.}\label{now-that-we-aggregated-by-candidate-occupation-and-location-lets-analyze-how-the-donations-change-over-time.-this-time-series-analysis-is-possible-because-we-pre-processed-the-dataset-to-extract-the-date-information-from-the-provided-raw-unformatted-date-string.}
+
+\begin{verbatim}
+## # A tibble: 6 x 4
+##   receipt_month mean_donation total_donation     n
+##           <int>         <dbl>          <dbl> <int>
+## 1             1         143.          90728.   636
+## 2             2         116.         162625.  1396
+## 3             3          82.7        162065.  1959
+## 4             4         133.         265042.  1998
+## 5             5          95.7        140063.  1463
+## 6             6         237.         336016.  1417
+\end{verbatim}
+
+\includegraphics{udacity_explore_and_summarize_data_files/figure-latex/unnamed-chunk-19-1.pdf}
+
+\paragraph{In the section above, we did a timeseries analysis, exploring
+how the contributions have changed over time. Plotting the data as a
+timeseries is very useful for any analysis. Visualizing the data in this
+format allows us to identify extreme points, seasonalities and trends in
+our data. For instance, we can notice how the months March and June have
+very extreme values, which can indicate seasonal periods. A deeper
+understanding of these periods can unravel hidden patterns in our
+data.}\label{in-the-section-above-we-did-a-timeseries-analysis-exploring-how-the-contributions-have-changed-over-time.-plotting-the-data-as-a-timeseries-is-very-useful-for-any-analysis.-visualizing-the-data-in-this-format-allows-us-to-identify-extreme-points-seasonalities-and-trends-in-our-data.-for-instance-we-can-notice-how-the-months-march-and-june-have-very-extreme-values-which-can-indicate-seasonal-periods.-a-deeper-understanding-of-these-periods-can-unravel-hidden-patterns-in-our-data.}
+
+\subsubsection{Analysis of correlation}\label{analysis-of-correlation}
+
+\paragraph{\texorpdfstring{In this dataset, we have only one continuous
+feature of interest (in fact, the most important feature). Therefore, we
+had to perform a correlation between numerical and categorical features.
+The test used is the Fligner-Killeen test, a test for homogeneity of
+variances. For this test, we are going to compare the contribution
+amount with two other features: \texttt{contributor\_occupation} and
+\texttt{contributor\_city}. The question we're trying to answer here is
+that if the amount contributed is independent of contributor's location
+and occupation. The Null hypothesis is that there are independent. Let's
+check
+below.}{In this dataset, we have only one continuous feature of interest (in fact, the most important feature). Therefore, we had to perform a correlation between numerical and categorical features. The test used is the Fligner-Killeen test, a test for homogeneity of variances. For this test, we are going to compare the contribution amount with two other features: contributor\_occupation and contributor\_city. The question we're trying to answer here is that if the amount contributed is independent of contributor's location and occupation. The Null hypothesis is that there are independent. Let's check below.}}\label{in-this-dataset-we-have-only-one-continuous-feature-of-interest-in-fact-the-most-important-feature.-therefore-we-had-to-perform-a-correlation-between-numerical-and-categorical-features.-the-test-used-is-the-fligner-killeen-test-a-test-for-homogeneity-of-variances.-for-this-test-we-are-going-to-compare-the-contribution-amount-with-two-other-features-contributor_occupation-and-contributor_city.-the-question-were-trying-to-answer-here-is-that-if-the-amount-contributed-is-independent-of-contributors-location-and-occupation.-the-null-hypothesis-is-that-there-are-independent.-lets-check-below.}
+
+\begin{verbatim}
+## 
+##  Fligner-Killeen test of homogeneity of variances
+## 
+## data:  log10(contributor_receipt_amount) by as.factor(contributor_occupation)
+## Fligner-Killeen:med chi-squared = 5587.5, df = 3648, p-value <
+## 2.2e-16
+\end{verbatim}
+
+\begin{verbatim}
+## 
+##  Fligner-Killeen test of homogeneity of variances
+## 
+## data:  log10(contributor_receipt_amount) by as.factor(contributor_city)
+## Fligner-Killeen:med chi-squared = 1979.4, df = 1144, p-value <
+## 2.2e-16
+\end{verbatim}
+
+\paragraph{As we can see, for a p-value of 0.05, we can reject the Null
+Hypothesis for both cases. We then can state that the financial
+contribution is not independent of the contributor's location and
+occupation.}\label{as-we-can-see-for-a-p-value-of-0.05-we-can-reject-the-null-hypothesis-for-both-cases.-we-then-can-state-that-the-financial-contribution-is-not-independent-of-the-contributors-location-and-occupation.}
+
+\subsubsection{Bivariate Analysis}\label{bivariate-analysis}
+
+\paragraph{This section let us observe interesting patterns and answer a
+couple of questions. We were able to draw a picture of the most common
+contributior profile by anylising the amounts donated by all candidates.
+This analysis of the contributor (donator) profile was possible by
+crossing data about the main features we selected before: candidate,
+location, and
+occupation.}\label{this-section-let-us-observe-interesting-patterns-and-answer-a-couple-of-questions.-we-were-able-to-draw-a-picture-of-the-most-common-contributior-profile-by-anylising-the-amounts-donated-by-all-candidates.-this-analysis-of-the-contributor-donator-profile-was-possible-by-crossing-data-about-the-main-features-we-selected-before-candidate-location-and-occupation.}
+
+\paragraph{Additionally, the features we created from the raw
+unformatted date provided were valuable in our exploration. We include
+date and time in our data, the analysis become much more robust because
+we have then the opportunity to observe the trends and seasonality of
+the data, such information impossible to derive without time
+perspective.}\label{additionally-the-features-we-created-from-the-raw-unformatted-date-provided-were-valuable-in-our-exploration.-we-include-date-and-time-in-our-data-the-analysis-become-much-more-robust-because-we-have-then-the-opportunity-to-observe-the-trends-and-seasonality-of-the-data-such-information-impossible-to-derive-without-time-perspective.}
+
+\paragraph{Finally, location and occupation (as we supposed) had the
+strongest relationship with the amount contributed. As we can assume,
+the amount contributed to a candidate will greatly depend on where the
+people live and what they do for
+living.}\label{finally-location-and-occupation-as-we-supposed-had-the-strongest-relationship-with-the-amount-contributed.-as-we-can-assume-the-amount-contributed-to-a-candidate-will-greatly-depend-on-where-the-people-live-and-what-they-do-for-living.}
+
+\paragraph{In the next section, we're going to add one more dimension to
+the analysis and I believe we will get an even better sense of the data
+of our
+analysis.}\label{in-the-next-section-were-going-to-add-one-more-dimension-to-the-analysis-and-i-believe-we-will-get-an-even-better-sense-of-the-data-of-our-analysis.}
+
+\section{Multivariate Plots Section}\label{multivariate-plots-section}
+
+\paragraph{To gain a deeper understanding of the contributor profile (as
+we did on a previous section), let's run a similar analaysis but now
+faceting the graph by each candidate. This way, we can have a better
+understanding of each candidate supporter's
+profile.}\label{to-gain-a-deeper-understanding-of-the-contributor-profile-as-we-did-on-a-previous-section-lets-run-a-similar-analaysis-but-now-faceting-the-graph-by-each-candidate.-this-way-we-can-have-a-better-understanding-of-each-candidate-supporters-profile.}
+
+\includegraphics{udacity_explore_and_summarize_data_files/figure-latex/Multivariate_Plots-1.pdf}
+
+\paragraph{As we can see on the chart above, the people who contributed
+more for her campaign are Attorney. For Sanders, Not Employed
+(interesting). Finally, for Trump, Retired
+people.}\label{as-we-can-see-on-the-chart-above-the-people-who-contributed-more-for-her-campaign-are-attorney.-for-sanders-not-employed-interesting.-finally-for-trump-retired-people.}
+
+\subsubsection{Breaking Time-series Analysis by
+candidate}\label{breaking-time-series-analysis-by-candidate}
+
+\paragraph{\texorpdfstring{Now the we have our date information, we can
+detail a bit more our time-series analysis by adding another dimension:
+\texttt{candidate\_name}.}{Now the we have our date information, we can detail a bit more our time-series analysis by adding another dimension: candidate\_name.}}\label{now-the-we-have-our-date-information-we-can-detail-a-bit-more-our-time-series-analysis-by-adding-another-dimension-candidate_name.}
+
+\includegraphics{udacity_explore_and_summarize_data_files/figure-latex/unnamed-chunk-22-1.pdf}
+
+\paragraph{\texorpdfstring{The graph above show the distribution of the
+contributions over time by each candidate. Also, we plotted a linear
+model to identify the trend of each candidate's distribution. Hillary
+had a high increase on June (if we take a look at the news, this
+importnat event happened on this month: ``9 June -- Obama endorses
+Clinton''), but after September, her contributions start to decline,
+following a negative trend. For Trump, on the other hand, the trend is
+rather stable. Sanders received contributions until July, when he
+suspended his campaign and endorsed Hillary Clinton
+(\url{https://tinyurl.com/olpm6ur}). Finally, we can spot some seasonal
+points on the plot for Donald Trump in March (as observed
+before).}{The graph above show the distribution of the contributions over time by each candidate. Also, we plotted a linear model to identify the trend of each candidate's distribution. Hillary had a high increase on June (if we take a look at the news, this importnat event happened on this month: 9 June -- Obama endorses Clinton), but after September, her contributions start to decline, following a negative trend. For Trump, on the other hand, the trend is rather stable. Sanders received contributions until July, when he suspended his campaign and endorsed Hillary Clinton (https://tinyurl.com/olpm6ur). Finally, we can spot some seasonal points on the plot for Donald Trump in March (as observed before).}}\label{the-graph-above-show-the-distribution-of-the-contributions-over-time-by-each-candidate.-also-we-plotted-a-linear-model-to-identify-the-trend-of-each-candidates-distribution.-hillary-had-a-high-increase-on-june-if-we-take-a-look-at-the-news-this-importnat-event-happened-on-this-month-9-june-obama-endorses-clinton-but-after-september-her-contributions-start-to-decline-following-a-negative-trend.-for-trump-on-the-other-hand-the-trend-is-rather-stable.-sanders-received-contributions-until-july-when-he-suspended-his-campaign-and-endorsed-hillary-clinton-httpstinyurl.comolpm6ur.-finally-we-can-spot-some-seasonal-points-on-the-plot-for-donald-trump-in-march-as-observed-before.}
+
+\subsubsection{Multivariate Analysis}\label{multivariate-analysis}
+
+\paragraph{Adding another dimension to the plots allowed us to detail
+the interaction between the variables. By adding the occupation and
+candidate together, we were able to draw the contributor profile for
+each
+candidate.}\label{adding-another-dimension-to-the-plots-allowed-us-to-detail-the-interaction-between-the-variables.-by-adding-the-occupation-and-candidate-together-we-were-able-to-draw-the-contributor-profile-for-each-candidate.}
+
+\paragraph{Additionally, by adding the candidate feature to the
+time-series analysis helped us understand how the contributions vary
+over time. Also, researching the news, we were able to find some
+important events that happened and which could help us justify some
+changes on the
+graph.}\label{additionally-by-adding-the-candidate-feature-to-the-time-series-analysis-helped-us-understand-how-the-contributions-vary-over-time.-also-researching-the-news-we-were-able-to-find-some-important-events-that-happened-and-which-could-help-us-justify-some-changes-on-the-graph.}
+
+\paragraph{Finally, for the time-series analysis, we created a linear
+model to spot the trend of the data for each candidate. Furthermore, we
+were surprised how much information just a simple date feature can add
+to our analysis. This information helps us understand what happened in
+the past, how each candidate is doing in his campaign, the trend of the
+data and some extreme points and
+seasonality.}\label{finally-for-the-time-series-analysis-we-created-a-linear-model-to-spot-the-trend-of-the-data-for-each-candidate.-furthermore-we-were-surprised-how-much-information-just-a-simple-date-feature-can-add-to-our-analysis.-this-information-helps-us-understand-what-happened-in-the-past-how-each-candidate-is-doing-in-his-campaign-the-trend-of-the-data-and-some-extreme-points-and-seasonality.}
+
+\section{Final words and Summary}\label{final-words-and-summary}
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\paragraph{This was a challenging project. I had some trouble
+manipulating the original dataset to transform it to a cleaner and more
+informative data structure. For this reason, I wanted to add extra
+features that would empower our analysis. Features about location and
+date were added and used extensively. Particularly, the date information
+was really useful to perform time-series analysis and understand the
+distribution of the data over
+time.}\label{this-was-a-challenging-project.-i-had-some-trouble-manipulating-the-original-dataset-to-transform-it-to-a-cleaner-and-more-informative-data-structure.-for-this-reason-i-wanted-to-add-extra-features-that-would-empower-our-analysis.-features-about-location-and-date-were-added-and-used-extensively.-particularly-the-date-information-was-really-useful-to-perform-time-series-analysis-and-understand-the-distribution-of-the-data-over-time.}
+
+\paragraph{Throughout the analysis, we were able to gain some insights
+about the financial contribution for the 2016 U.S. presidential
+election. We were able to find the top candidates, location, and
+occupation which contributed the most to the funding of presidential
+campaigns. Also, we found very interesting that some important events
+that happened during the campaign of each candidate had some influence
+on the amount contributed. Finally, we were able to spot the trends,
+seasonality and outliers on the data and to draw the profile of people
+who donated for each presidency
+candidate.}\label{throughout-the-analysis-we-were-able-to-gain-some-insights-about-the-financial-contribution-for-the-2016-u.s.-presidential-election.-we-were-able-to-find-the-top-candidates-location-and-occupation-which-contributed-the-most-to-the-funding-of-presidential-campaigns.-also-we-found-very-interesting-that-some-important-events-that-happened-during-the-campaign-of-each-candidate-had-some-influence-on-the-amount-contributed.-finally-we-were-able-to-spot-the-trends-seasonality-and-outliers-on-the-data-and-to-draw-the-profile-of-people-who-donated-for-each-presidency-candidate.}
+
+\paragraph{\texorpdfstring{Our work could be improved by adding more
+features to our dataframe (for example, more information about the
+contributors (like address, education, etc)) and performing a more
+elaborated work on time-series analysis, like forecasting, ARIMA, etc.
+We had some attempts to work with the Facebook library \texttt{prophet},
+but issues on our environment limited our
+resources.}{Our work could be improved by adding more features to our dataframe (for example, more information about the contributors (like address, education, etc)) and performing a more elaborated work on time-series analysis, like forecasting, ARIMA, etc. We had some attempts to work with the Facebook library prophet, but issues on our environment limited our resources.}}\label{our-work-could-be-improved-by-adding-more-features-to-our-dataframe-for-example-more-information-about-the-contributors-like-address-education-etc-and-performing-a-more-elaborated-work-on-time-series-analysis-like-forecasting-arima-etc.-we-had-some-attempts-to-work-with-the-facebook-library-prophet-but-issues-on-our-environment-limited-our-resources.}
+
+
+\end{document}

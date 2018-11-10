@@ -2,8 +2,6 @@
 
 
 
-
-
 ## **Dataset**
 O dataset utilizado nesse projeto pode ser encontrado no seguinte endereço: https://tinyurl.com/y8d3xhms.
 

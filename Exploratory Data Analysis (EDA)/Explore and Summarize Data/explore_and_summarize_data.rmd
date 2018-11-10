@@ -1,0 +1,758 @@
+---
+output:
+  html_document: default
+  pdf_document: default
+---
+Financial Contributions to Presidential Campaigns in 2016
+===================================================================================================
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, packages}
+# Load all of the packages that you end up using in your analysis in this code
+# chunk.
+
+# Notice that the parameter "echo" was set to FALSE for this code chunk. This
+# prevents the code from displaying in the knitted HTML output. You should set
+# echo=FALSE for all code chunks in your file, unless it makes sense for your
+# report to show the code that generated a particular plot.
+
+# The other parameters for "message" and "warning" should also be set to FALSE
+# for other code chunks once you have verified that each plot comes out as you
+# want it to. This will clean up the flow of your report.
+
+library(readr)
+library(dplyr)
+library(ggmap)
+library(ggplot2)
+library(formattable)
+library(circlize)
+library(lubridate)
+library(gridExtra)
+
+```
+
+#### In this report, we're going to explore the Financial Contributions to president candidates of the 2016 U.S. presidential election. At each individual section of this report, we're going to answer different types of questions, and we'll refine our assumptions as we advance through the analysis. Some of the questions we're going to answer by the end of this report:
+  - Which candidate received the most number of contributions?
+  - Which candidate received the highest amount?
+  - What are the most common occupations from the contributors?
+  - Which location has the highest amount contributed? To which candidate?
+  - How the contributions vary over time? 
+  - Does the contribution amount have an impact on the final result of the election?
+  - The profile of contributors for each candidate (top 3)
+  - and more.
+
+```{r echo=FALSE, Load_the_Data, message=FALSE, warning=FALSE}
+# Load the Data
+financial_contrib <- read_csv("Data/P00000001-NY.csv")
+
+columns_to_select <- c("comitee_id", "candidate_id", "candidate_name", "contributor_name",
+                                 "contributor_city", "contributor_state", "contributor_zip_code",                                            "contributor_employer", "contributor_occupation",                                                           "contributor_receipt_amount", "contributor_receipt_date",
+                                 "receipt_description", "memo_code", "memo_text", "form_type",                                               "file_number", "transaction_id", "election_type")
+
+# Changing the name of the the columns to match the dataset documentation and be more readable to work
+colnames(financial_contrib) <- columns_to_select
+
+# Displaying the structure of the dataset
+str(financial_contrib)
+```
+
+```{r echo=FALSE, Take_Look_at_Data}
+# Taking a look at the head of the dataset
+head(financial_contrib)
+```
+
+# <strong>Data Wrangling & Manipulation</strong>
+
+#### At this section, we're going to perform some data manipulation in order to transform our dataset in a cleaner, more informative data structure.
+
+```{r Data_Manipulation}
+# Converting string dates to date objects to be able to perform date operations
+financial_contrib$contributor_receipt_date <- parse_date_time(x = financial_contrib$contributor_receipt_date,
+                orders = c("%d-%b-%y"))
+
+# Extracting day from date
+financial_contrib$receipt_day <- format(financial_contrib$contributor_receipt_date, "%d")
+
+# Extracting month from date
+financial_contrib$receipt_month <- format(financial_contrib$contributor_receipt_date, "%m")
+
+# Extracting year from date
+financial_contrib$receipt_year <- format(financial_contrib$contributor_receipt_date, "%Y")
+
+# Converting contribution amount to double
+financial_contrib$contributor_receipt_amount <- as.double(financial_contrib$contributor_receipt_amount)
+
+# Converting file number to integer
+financial_contrib$file_number <- as.numeric(financial_contrib$file_number)
+
+# Converting occupation to factor
+financial_contrib$contributor_occupation <- as.factor(financial_contrib$contributor_occupation)
+
+# Converting city to factor
+financial_contrib$contributor_city <- as.factor(financial_contrib$contributor_city)
+
+# Converting election type to factor
+financial_contrib$election_type <- as.factor(financial_contrib$election_type)
+
+# Converting employer to factor
+financial_contrib$contributor_employer <- as.factor(financial_contrib$contributor_employer)
+
+# Converting zipcode to string
+financial_contrib$contributor_zip_code <- as.character(financial_contrib$contributor_zip_code)
+
+# Recover unique cities to geocode
+unique_cities_df <- data.frame(city = unique(financial_contrib$contributor_city))
+unique_cities_df$city <- as.character(unique_cities_df$city)
+
+# Getting the name of unique locations
+unique_cities_df <- na.omit(unique_cities_df)
+
+```
+
+#### Uncomment this chunk to download geolocation data
+
+```{r}
+# Calling geolocation service to obtain lat and lon 
+#geocode_output_df <- geocode(unique_cities_df$city,
+ #   output = 'latlona',
+ #   source = 'dsk',
+ #   messaging = FALSE,
+ #   sensor = FALSE)
+
+# Changing the 'address' column name to match the original dataframe in order to join the data
+#colnames(geocode_output_df)[which(names(geocode_output_df) == "address")] <- "contributor_city"
+
+# Omiting NA values
+#geocode_output_df <- na.omit(geocode_output_df)
+```
+
+#### Joining dataframes by `contributur_city` key. Uncomment this chunk to join dataframes with the geolocation data
+
+```{r}
+# Joining original dataset with geolocation dataframe by 'contributor_city' key
+#financial_contrib <- left_join(financial_contrib, geocode_output_df, by='contributor_city')
+
+# Appending the newly created columns to the original ones 
+#new_columns <- append(columns_to_select, c('receipt_day', 'receipt_month', 'receipt_year',
+#                                                     'lon', 'lat'))
+
+# Selecting the columns of interest
+#financial_contrib <- select(financial_contrib, new_columns)
+
+# Saving the transformed dataset to avoid iterating over all this process again
+#write.csv(financial_contrib, 'Data/financial_contributions.csv')
+```
+
+
+
+## Loading the transformed dataset
+
+#### <strong>Disclaimer</strong>: In order to make the process faster, I'll provide the transformed dataset along with my code. If you uncomment the 2 previous chunk above, the result will be the same, but it will take a long time to get the geocode data from Google service. As I already had to go through this process to compile this report, I am providing the full dataset. 
+
+#### Loading the transformed data set and extracting a sample from it, considering the original size of the dataset and performance issues.
+
+```{r Load_the_Transformed_Data}
+# Loading the transformed dataset to explore on the next sessions
+financial_contributions_df <- read.csv('Data/financial_contributions.csv', as.is = TRUE)
+
+# Setting seef for reproducibility
+set.seed(1024)
+
+# Making a sample to address performance issues
+sample_financial_dataset <- financial_contributions_df[sample(length(financial_contributions_df$contributor_receipt_amount), 20000), ]
+
+# Taking a look at the top records of the transformed dataset
+head(sample_financial_dataset)
+
+```
+
+# Data visualization
+
+#### The dataset we are going to explore provides data about individual financial contributions to presidentials campaigns of 2016 U.S. presidential election. We are going to start by analysing the structure of some variables of interest such as `contributor_receipt_amount`.
+
+## Univariate Plots Section
+
+#### Summary of the contribution amounts. We notice that there is a negative value (which may indicate refunds made to some reported individuals, as stated on the dataset documentation) and the Max value is clearly an extreme value.
+
+```{r echo=FALSE}
+# Summary of the contribution amount
+summary(sample_financial_dataset$contributor_receipt_amount)
+```
+
+#### Let's explore the datetime data that we extracted from the `contributor_receipt_date` feature. That step was very important because now we can have a sense of how the data is distributed over time, which it would't be possible by the provided date format. In the next section, we're going to explore the summary statistics for contributions by <strong>day</strong> and <strong>month</strong>. It wouldn't make sense for us to analyze year data, since most of the contributions account for the election year itself (2016). The cell bellow confirm this assumption. 
+
+```{r echo=FALSE}
+# Number of contributions by year
+table(sample_financial_dataset$receipt_year)
+
+```
+
+
+#### Counting contributions made at each day of the month. Does the number of contribution increase as we get closer to the end of the month? It seems to be the case.
+
+```{r echo=FALSE}
+# The contributions count for each day of the month
+table(sample_financial_dataset$receipt_day)
+```
+
+#### We can apply the same counting to each month. For the months, it seems it's a more spread distribution, having a lot of contributions on <strong>MARCH</strong>, <strong>APRIL</strong>, <strong>SEPTEMBER</strong>, and <strong>OCTOBER</strong>.
+
+```{r echo=FALSE}
+table(sample_financial_dataset$receipt_month)
+```
+
+```{r echo=FALSE, Univariate_Plots}
+
+# Finding the range of receipt amounts
+range(sample_financial_dataset$contributor_receipt_amount)
+
+# Creating histogram and limiting the x-axis to display only positive values
+ggplot(aes(x = contributor_receipt_amount),
+       data = sample_financial_dataset) + 
+  geom_histogram(binwidth = 500, fill = I('#357a38')) + 
+  coord_cartesian(xlim = c(0, 6000))
+  
+```
+
+#### The data for the reported contribution amount is very right skewed. Let's apply a `log10` transformation to get it more like a normal distribution. In fact, the most common amounts contributed are shown below.
+
+```{r echo=FALSE}
+# The most common amounts donated do presidentials 
+head(sort(table(sample_financial_dataset$contributor_receipt_amount), decreasing = TRUE), 10)
+```
+
+#### Now, let's do a log10 transformation to reshaped the data distribution to look like a normal curve.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+# Creating histogram and limiting the x-axis to display only positive values
+ggplot(aes(x = log(contributor_receipt_amount)),
+       data = sample_financial_dataset, na.action = na.exclude) + 
+  geom_histogram(fill = I('#357a38')) + 
+  coord_cartesian(xlim = c(0, 8))
+```
+
+#### Note that the data for `contributor_receipt_amount` is much more close to a normal distribution than before. Let's continue our analysis by exploring contributions to individual candidates.
+
+#### First, let's take a look at the `table` command to check the candidates which received the most individual contributions.
+
+```{r echo=FALSE}
+
+# Table the `candidate_name` column
+table(sample_financial_dataset$candidate_name)
+
+```
+
+#### Plotting the percentage of contributions to each presidential candidate.
+
+```{r echo=FALSE}
+
+# Showing the percentage of contributions by candidate
+ggplot(aes(candidate_name, (..count..)/sum(..count..)), data = sample_financial_dataset,
+       position = "dodge") +
+  geom_bar(fill = I('#009688')) + 
+  theme(axis.text.x = element_text(angle=90)) + 
+  scale_y_continuous(labels = percent) + 
+  ylab('Total contributions (%)') + 
+  xlab('Candidate') + 
+  ggtitle('Total contribution amount for all candidates')
+
+```
+
+#### The plot above shows us that <strong>Hillary Clinton</strong>, <strong> Bernard Sanders </strong>, and <strong>Donald Trump</strong> received the most contributions.
+
+#### Taking a similar approach, let's see the distribution of the occupation of each individual contributor. First, let's take a look at the table command to get a better sense of this variable. 
+
+```{r echo=FALSE}
+# The number of unique occupation positions from contributors
+length(unique(sample_financial_dataset$contributor_occupation))
+```
+
+#### Considering we have over 3,500 unique occupations for financial contributors, let's just have a pick at the most commom positions. In order to do this, lets order the `table` function with `decreasing` parameter as `TRUE` and passing the value 10 to the `head` function to get the top 10 values.
+
+```{r echo=FALSE}
+# The top 10 occupation from contributors
+top10_occupations <- head(sort(table(sample_financial_dataset$contributor_occupation), decreasing = TRUE), 10)
+top10_occupations
+```
+
+
+#### Filtering the dataframe to display only the data for the top 10 occupations. This is done in order to make a readable plot. Otherwise, it would be impossible to visualize the data.
+
+```{r echo=FALSE}
+
+# Filtering the dataframe to display only the data for the top 10 occupations
+top_10_occ_df <- sample_financial_dataset[sample_financial_dataset$contributor_occupation %in% rownames(top10_occupations), ]
+
+# Plotting the occupation bar plot
+ggplot(aes(contributor_occupation, (..count..)/sum(..count..)),
+       data = top_10_occ_df) +
+  geom_bar(fill = I('#b26a00'),
+           position = 'dodge') + 
+  theme(axis.text.x = element_text(angle=90)) + 
+  scale_y_continuous(labels = percent) + 
+  ylab('Total contributions (%)') + 
+  xlab('Occupation') + 
+  ggtitle('Total contribution amount for all occupations')
+  
+```
+
+#### This plot indicates that <strong>RETIRED</strong> peolple are the ones with the most contributions to the presidential
+
+## <strong>Univariate Analysis</strong>
+
+#### We are done exploring one variable. Not, let's provide a quick summary of what's been observed through this section of the analysis, which is just the starting point of a more elaborated exploration coming on the next sections.
+
+#### This is an example of a <strong>tidy</strong> dataset, where each observation is a row and each variable forms a column in the collection of data. The first step we took at the data wrangling and manipulation was to trasnform and clean the original dataset. We converted some features to `factor`, `integer`, and `datetime`. These transformations were performed in order to create a more concise dataset and prepare it to future data exploration phases. Other than that, we managed to create 5 new features from the original dataset to add more value to our observations. We are going to explain in more details below the transformations executed for some of the most important features we're going to use.
+
+#### The data distribution for the `amount` variable is highly right skewed. Hence, a `log10` transformation has been applied to transform it to a normal-like distribution.
+
+#### There are several features of interest: 
+  - `candidate_name`: the name of the candidate as a factor variable will be really useful in this analysis in order to group the financial contributions by candidate and see how each candidate compare with each other in terms of amount received.
+  - `contributor_city`: the location of the person who made the contribution. We are going to use this feature to segment the amount contributed by each candidate by location, to undertstand which presidential performed better in which location.
+  - `occupation`: to map the most common occupation from the contributors.
+  - `contributor_receipt_amount`: the amount contributed, perhaps the most important feature to be analyzed, once will provide us the opportunity to aggregate the data by a single number ($), and elaborate our assumptions.
+  - `contributor_receipt_date`: this feature is very important because it allowed us to create new variables to understand the data movement through time. With this information, we can plot timeseries analysis and understand how the values change over time. It's important to note that this feature didn't came in a usable format. For this reason, we had to apply some transformations on the data manipulation section to make it useful.
+  - `lat` and `lon`: These two are two features extracted from the original location the dataset provided. With this information, we're now able to perform map operations, like plotting the aggregated values on a map.
+
+#### At the end of our transformations, we saved the newly formatted dataframe into a new csv dataset. We did this to preserve our operations and avoing doing all the steps once again. Other than that, we created the variables `lat` and `lon` calling the `geocode()` function from the `ggmap` library. This call itself takes a long time to complete (because each location is one request to the Google Service Location API). Therefore, we don't want to perform this step again everytime we run this report.
+
+# <strong>Bivariate Plots Section</strong>
+
+#### In this section, we're going to summarize financial contributions by candidate, location and occupation. The first step is to group the values by these variables forementioned. To create effective and attractive plots, we're going to limit the aggregated data to the top 5 results.
+
+```{r echo=FALSE, Bivariate_Plots}
+
+# Grouping data by candidate and calculating mean and total contribution amount
+stats_donation_by_candidate <- sample_financial_dataset %>% group_by(candidate_name) %>%
+  summarise(mean_donation = mean(contributor_receipt_amount),
+            total_donation = sum(contributor_receipt_amount))
+
+# Sorting the grouped data by total amount
+stats_donation_by_candidate <-arrange(stats_donation_by_candidate, desc(total_donation))
+
+# Grouping data by location and calculating mean and total contribution amount
+stats_donation_by_location <- sample_financial_dataset %>% group_by(contributor_city) %>%
+  summarise(mean_donation = mean(contributor_receipt_amount),
+            total_donation = sum(contributor_receipt_amount))
+
+# Sorting the grouped data by total amount
+stats_donation_by_location <- arrange(stats_donation_by_location, desc(total_donation))
+
+# Grouping data by occupation and calculating mean and total contribution amount
+stats_donation_by_occupation <- sample_financial_dataset %>% group_by(contributor_occupation) %>%
+  summarise(mean_donation = mean(contributor_receipt_amount),
+            total_donation = sum(contributor_receipt_amount))
+
+# Sorting the grouped data by total amount
+stats_donation_by_occupation <- arrange(stats_donation_by_occupation, desc(total_donation))
+
+# Creating the first plot showing total contribution by occupation
+plot1 <- ggplot(aes(x = contributor_occupation, y = (total_donation/sum(sample_financial_dataset$contributor_receipt_amount))),
+       data = head(stats_donation_by_occupation, 5)) + 
+  geom_bar(stat = 'identity', fill = I('#00227b')) + 
+  scale_y_continuous(labels = percent) +
+  ylab('Total Contributions (%)') + 
+  xlab('Occupation') + 
+  theme(axis.text.x = element_text(angle=90))
+
+# Creating the second plot showing total contribution by location
+plot2 <- ggplot(aes(x = contributor_city, y = (total_donation/sum(sample_financial_dataset$contributor_receipt_amount))),
+       data = head(stats_donation_by_location, 5)) + 
+  geom_bar(stat = 'identity', fill = I('#00227b')) + 
+  scale_y_continuous(labels = percent) +
+  ylab('Total Contributions (%)') + 
+  xlab('Location') +
+  theme(axis.text.x = element_text(angle=90))
+
+# Creating the third plot showing total contribution by location
+plot3 <- ggplot(aes(x = candidate_name, y = (total_donation/sum(sample_financial_dataset$contributor_receipt_amount))),
+       data = head(stats_donation_by_candidate, 5)) + 
+  geom_bar(stat = 'identity', fill = I('#00227b')) + 
+  scale_y_continuous(labels = percent) + 
+  ylab('Total Contributions (%)') + 
+  xlab('Presidential') + 
+  theme(axis.text.x = element_text(angle=90))
+
+# Plot the 3 charts together, side by side, showing total amount contributed by candidate, location and occupation
+grid.arrange(plot1, plot2, plot3, ncol=3)
+
+```
+
+#### Looking at the graph above, we identified that the profile of the people who contributed the most is a <strong>Retired</strong> person who lives in <strong>New York</strong> and contributed to <strong>Hillary Clinton's</strong> campaign.
+
+### <strong>Boxplots</strong>
+
+#### Let's group the data by candidate and filter out the top 3 presidentials with the most contributions amount in order to make easier to read the visualizations. In this next section, we're going to prepare the data to be plotted on the next section using boxplots.
+
+```{r echo=FALSE}
+
+# Grouping data by candidate and calculate the mean and total contribution by each one
+grouped_by_candidate <- sample_financial_dataset %>% group_by(candidate_name) %>%
+  summarise(mean_donation = mean(contributor_receipt_amount),
+            total_donation = sum(contributor_receipt_amount))
+
+# Variable to select rows containing 'Hillary'
+rows_to_select_hillary = c('Clinton, Hillary Rodham')
+
+# Variable to select rows containing 'Sanders'
+rows_to_select_sanders = c('Sanders, Bernard')
+
+# Variable to select rows containing 'Trump'
+rows_to_select_trump = c('Trump, Donald J.')
+
+# Filtering the grouped data by Hillary 
+hillary_distribution <- sample_financial_dataset[sample_financial_dataset$candidate_name %in% rows_to_select_hillary, ]
+
+# Filtering the grouped data by Sanders 
+sanders_distribution <- sample_financial_dataset[sample_financial_dataset$candidate_name %in% rows_to_select_sanders, ]
+
+# Filtering the grouped data by Trump 
+trump_distribution <- sample_financial_dataset[sample_financial_dataset$candidate_name %in% rows_to_select_trump, ]
+```
+
+#### Now that we grouped the data by candidate and filtered the top 3, we're going to create boxplots to understand the distributions for each of the presidentials. Boxplots help us visualize how the data is distributed, the 25%, 50% (median), 75%, Intequartile Range of the data and extreme values (outliers).
+
+#### Let's visualize the boxplots by month for Hillary Clinton.
+
+```{r echo=FALSE}
+# Finding the range of contribution amounts for Hillary
+range(hillary_distribution$contributor_receipt_amount)
+
+# Plotting boxplots for contributions for Hillary by month
+ggplot(aes(x = receipt_month, y = contributor_receipt_amount, group = receipt_month),
+       data = hillary_distribution) + 
+  geom_boxplot(outlier.size = 0) + 
+  coord_cartesian(xlim = c(1, 12), ylim = c(0, 1000)) + 
+  scale_y_continuous(breaks = seq(0, 1000, 200)) +  
+  scale_x_continuous(breaks = 1:12,
+                    labels= c('Jan', 'Feb', 'Mar', 'May', 'Apr', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec')) + 
+  ylab('Contributors amount distribution in dollars ($)') + 
+  xlab('Month') + 
+  ggtitle('Distribution of contributions by month for Hillary Clinton')
+```
+
+#### It's interesting to see how there are a lot of outliers for some months for Hillary (which could indicate ups and downs in her campaign), like September and October. The median value is greater for January and December.
+
+#### Now let's visualize the boxplots by month for Bernard Sanders.
+
+```{r echo=FALSE}
+# Finding the range of contribution amounts for Sanders
+range(sanders_distribution$contributor_receipt_amount)
+
+# Plotting boxplots for contributions for Sanders by month
+ggplot(aes(x = receipt_month, y = as.numeric(contributor_receipt_amount), group = receipt_month),
+       data = sanders_distribution) + 
+  geom_boxplot(outlier.size = 0) + 
+  coord_cartesian(xlim = c(1, 12), ylim = c(0, 1000)) + 
+  scale_y_continuous(breaks = seq(0, 1000, 200)) +  
+  scale_x_discrete(breaks = 1:12,
+                     labels= c('Jan', 'Feb', 'Mar', 'May', 'Apr', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec')) +
+  ylab('Contributors amount distribution in dollars ($)') + 
+  xlab('Month') + 
+  ggtitle('Distribution of contributions by month for Bernard Sanders')
+```
+
+#### Sanders doesn't have as many outliers as Hillary, and the range of the financial contributions is also low compared to the other 2. Other than that, he received most of his highest contributions on August and September.
+
+#### Finally, Let's visualize the boxplots by month for Donald Trump.
+
+```{r echo=FALSE}
+# Finding the range of contribution amounts for Trump
+range(trump_distribution$contributor_receipt_amount)
+
+# Plotting boxplots for contributions for Trump by month
+ggplot(aes(x = receipt_month, y = contributor_receipt_amount, group = receipt_month),
+       data = trump_distribution) + 
+  geom_boxplot(outlier.size = 0) + 
+  coord_cartesian(xlim = c(1, 12), ylim = c(0, 2800)) + 
+  scale_y_continuous(breaks = seq(0, 2800, 200)) +  
+  scale_x_continuous(breaks = 1:12,
+                     labels= c('Jan', 'Feb', 'Mar', 'May', 'Apr', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec')) + 
+  ylab('Contributors amount distribution in dollars ($)') + 
+  xlab('Month') + 
+  ggtitle('Distribution of contributions by month for Donald Trump')
+```
+
+#### There aren't many outliers for Trump as well. However, the range of his contribution is very high compared to others, and he received a huge amount of donations on May. Let's investigate a little what happened on this month to try to understand a bit more about this data. If we look at the news (https://tinyurl.com/olpm6ur, https://tinyurl.com/y9culvkw, https://tinyurl.com/y9z9gjjy), a couple of things happened:
+  - Some candidates withdraw their presidency campaigns such as John Kasich and Ted Cruz. Speech by Cruz in his concession: "From the beginning I’ve said that I would continue on as long as there was a viable path to victory. Tonight I’m sorry to say it appears that path has been foreclosed."
+  - Nationally televised presidential debates 
+  - Trump crosses delegate threshold
+
+#### Now that we analyzed the data distribution by month, let's explore each candidate overall distribution to understand a little more of their contributions received.
+
+```{r echo=FALSE}
+# Boxplot for Hillary Clinton's donations
+p1 <- ggplot(aes(x = candidate_name, y = contributor_receipt_amount),
+       data = hillary_distribution) + 
+  geom_boxplot(outlier.size = 0) + 
+  coord_cartesian(ylim = c(0, 1000)) + 
+  scale_y_continuous(breaks = seq(0, 1000, 100))
+
+# Boxplot for Bernard Sanders' donations
+p2 <- ggplot(aes(x = candidate_name, y = contributor_receipt_amount),
+       data = sanders_distribution) + 
+  geom_boxplot(outlier.size = 0) + 
+  coord_cartesian(ylim = c(0, 1000)) + 
+  scale_y_continuous(breaks = seq(0, 1000, 100))
+
+# Boxplot for Donald Trump donations
+p3 <- ggplot(aes(x = candidate_name, y = contributor_receipt_amount),
+       data = trump_distribution) + 
+  geom_boxplot(outlier.size = 0) + 
+  coord_cartesian(ylim = c(0, 1000)) + 
+  scale_y_continuous(breaks = seq(0, 1000, 100))
+
+grid.arrange(p1, p2, p3, ncol = 3)
+
+```
+
+#### Investigating each candidate's distribution, we can confirm what has been observed before. Hillary's distribution has several outlier points. Sanders' has a very low range of values, and Trump's has the greatest median value. Even though Hillary received the highest overall amount, it seems that values contributued to Donald Trump are greater. From this data we could draw some assumptions: 
+  - This might be an indication of engagement from his supporters
+  - Perhaps better financial condition overall of his audience \
+  
+#### To answer these questions, we would need additional data about the contributors (which we lack on this dataset). Additionally, this analysis is out of the scope of this report.
+
+### <strong>Time-series Analysis</strong>
+
+#### Now that we aggregated by candidate, occupation and location, let's analyze how the donations change over time. This time series analysis is possible because we pre-processed the dataset to extract the date information from the provided raw, unformatted date string.
+
+```{r echo=FALSE}
+
+# Aggregating contributions amount by month, and creating the stats features 'mean_donation', 'total_donation' and 'n' (as the number of donations)
+timeseries_contrib <- sample_financial_dataset %>% group_by(receipt_month) %>%
+  summarise(mean_donation = mean(contributor_receipt_amount),
+            total_donation = sum(contributor_receipt_amount),
+            n = n())
+
+head(timeseries_contrib)
+
+# Calculate the grand mean for amount
+grand_mean <- mean(sample_financial_dataset$contributor_receipt_amount)
+
+# Calculate the max mean_donation amount
+grand_max <- max(timeseries_contrib$mean_donation)
+
+# Calculate the min mean_donation amount
+grand_min <- min(timeseries_contrib$mean_donation)
+
+# Plotting line chart with timeseries data grouping the data by average per month
+ggplot(aes(x = receipt_month, y = mean_donation),
+       data = timeseries_contrib) + 
+  geom_line(linetype = "3313", color = '#00227b') + 
+  geom_hline(yintercept = grand_mean,
+                               linetype = "dashed", alpha = .5) + 
+  geom_point(color = '#00227b') + 
+  coord_cartesian(xlim = c(1, 12)) + 
+  scale_x_continuous(breaks = 1:12,
+                     labels= c('Jan', 'Feb', 'Mar', 'May', 'Apr', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 
+                             'Dec')) +
+  annotate("rect", xmin = -Inf, xmax = Inf,
+           ymin = grand_mean, ymax = grand_max, 
+           fill='#0069c0',
+           alpha = .1,
+           color = NA) + 
+  annotate("rect", xmin = -Inf, xmax = Inf,
+           ymin = grand_min, ymax = grand_mean, 
+           fill='#9a0007',
+           alpha = .1, color = NA) + 
+  ylab('Average contribution in dollars ($)') + 
+  xlab('Month') + 
+  ggtitle('Average contributions amount over time (by month)') + 
+  geom_line(aes(y=))
+
+```
+
+#### In the section above, we did a timeseries analysis, exploring how the contributions have changed over time. Plotting the data as a timeseries is very useful for any analysis. Visualizing the data in this format allows us to identify extreme points, seasonalities and trends in our data. For instance, we can notice how the months March and June have very extreme values, which can indicate seasonal periods. A deeper understanding of these periods can unravel hidden patterns in our data.
+
+
+```{r echo=FALSE}
+
+# In this sectin, I was going to use Facebook's prophet library to forecast the distribution data, but inconsistencies in my invironment (Linux) made it a bit difficult. For this reason, I let this for a future moment. Anyways, I already prepared the data to feed into the prophet dataframe structure.
+
+# Filtering the first 6 months of 2016
+first_semester_2016 <- sample_financial_dataset[sample_financial_dataset$receipt_year == 2016 & 
+                           sample_financial_dataset$receipt_month <= 6, ]
+
+# Preparing the data for Prophet
+first_semester_2016 <- select(first_semester_2016, c('contributor_receipt_amount',
+                                   'contributor_receipt_date'))
+
+# Converting the `contributor_receipt_date` column from string to date object
+first_semester_2016$contributor_receipt_date <- as.Date(first_semester_2016$contributor_receipt_date)
+
+# Showing the top results
+# head(first_semester_2016)
+
+```
+
+### <strong>Analysis of correlation</strong>
+
+#### In this dataset, we have only one continuous feature of interest (in fact, the most important feature). Therefore, we had to perform a correlation between numerical and categorical features. The test used is the Fligner-Killeen test, a test for homogeneity of variances. For this test, we are going to compare the contribution amount with two other features: `contributor_occupation` and `contributor_city`. The question we're trying to answer here is that if the amount contributed is independent of contributor's location and occupation. The Null hypothesis is that there are independent. Let's check below.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+# Not independent (can reject the null hypothesis)
+fligner.test(log10(contributor_receipt_amount) ~ as.factor(contributor_occupation),
+             data = sample_financial_dataset, na.action = na.exclude)
+
+# Not independent (can reject the null hypothesis)
+fligner.test(log10(contributor_receipt_amount) ~ as.factor(contributor_city),
+             data = sample_financial_dataset, na.action = na.exclude)
+```
+
+#### As we can see, for a p-value of 0.05, we can reject the Null Hypothesis for both cases. We then can state that the financial contribution is not independent of the contributor's location and occupation.
+
+### <strong>Bivariate Analysis</strong>
+
+#### This section let us observe interesting patterns and answer a couple of questions. We were able to draw a picture of the most common contributior profile by anylising the amounts donated by all candidates. This analysis of the contributor (donator) profile was possible by crossing data about the main features we selected before: candidate, location, and occupation.
+
+#### Additionally, the features we created from the raw unformatted date provided were valuable in our exploration. We include date and time in our data, the analysis become much more robust because we have then the opportunity to observe the trends and seasonality of the data, such information impossible to derive without time perspective.
+
+#### Finally, location and occupation (as we supposed) had the strongest relationship with the amount contributed. As we can assume, the amount contributed to a candidate will greatly depend on where the people live and what they do for living.
+
+#### In the next section, we're going to add one more dimension to the analysis and I believe we will get an even better sense of the data of our analysis.
+
+# <strong>Multivariate Plots Section</strong>
+
+#### To gain a deeper understanding of the contributor profile (as we did on a previous section), let's run a similar analaysis but now faceting the graph by each candidate. This way, we can have a better understanding of each candidate supporter's profile.
+
+```{r echo=FALSE, Multivariate_Plots}
+
+# Adding one more dimension to the analysis
+
+# Grouping the data by occupation
+group_by_occupation <- sample_financial_dataset %>% group_by(contributor_occupation) %>%
+  summarise(mean_donation = mean(contributor_receipt_amount),
+            total_donation = sum(contributor_receipt_amount))
+
+# Sorting the occupations by those with the highest contribution amounts
+group_by_occupation <- arrange(group_by_occupation, desc(total_donation))
+
+# Selecting top occupation names to filter the original dataframe
+top_occupations <- head(group_by_occupation, 5)$contributor_occupation
+
+# Grouping data by occupation and candidate and then calculating the mean and total donation amounts
+stats_donation_by_loc_and_candidate <- sample_financial_dataset %>% group_by(contributor_occupation, candidate_name) %>%
+  summarise(mean_donation = mean(contributor_receipt_amount),
+            total_donation = sum(contributor_receipt_amount))
+
+# Sorting the data by total donation
+stats_donation_by_loc_and_candidate <- arrange(stats_donation_by_loc_and_candidate, desc(total_donation))
+
+# Filtering the rows by the top 3 candidates
+stats_donation_by_loc_and_candidate <- stats_donation_by_loc_and_candidate[stats_donation_by_loc_and_candidate$candidate_name %in% c(rows_to_select_hillary, rows_to_select_trump, rows_to_select_sanders), ]
+
+# Filtering the occupation by the top 5 occupations
+stats_donation_by_loc_and_candidate <- stats_donation_by_loc_and_candidate[stats_donation_by_loc_and_candidate$contributor_occupation %in% top_occupations, ]
+
+# Plotting top occupations by the top 3 candidates, faceting the candidate name
+ggplot(aes(x = contributor_occupation, y = total_donation/sum(sample_financial_dataset$contributor_receipt_amount)), 
+       data = stats_donation_by_loc_and_candidate) + 
+  geom_bar(stat = 'identity', fill = I('#00227b')) + 
+  facet_wrap(~ stats_donation_by_loc_and_candidate$candidate_name) + 
+  scale_y_continuous(labels = percent) +
+  ylab('Total Contributions (%)') + 
+  xlab('Occupation') + 
+  theme(axis.text.x = element_text(angle=90)) 
+
+```
+
+#### As we can see on the chart above, the people who contributed more for her campaign are Attorney. For Sanders, Not Employed (interesting). Finally, for Trump, Retired people.
+
+### <strong>Breaking Time-series Analysis by candidate</strong>
+
+#### Now the we have our date information, we can detail a bit more our time-series analysis by adding another dimension: `candidate_name`.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+# Grouping the data by only the year of 2016 and amounts greater than 0, then grouping the data by month and candidate, calculating mean donation, total donation and the number of donations
+timeseries_contrib_multi <- sample_financial_dataset[sample_financial_dataset$receipt_year == 2016 & 
+                                                       sample_financial_dataset$contributor_receipt_amount > 0, ] %>% group_by(receipt_month, candidate_name) %>%
+  summarise(mean_donation = mean(contributor_receipt_amount),
+            total_donation = sum(contributor_receipt_amount),
+            n = n())
+
+# Filtering the data by Hillary
+hillary_distribution <- timeseries_contrib_multi[timeseries_contrib_multi$candidate_name %in% rows_to_select_hillary, ]
+
+# Filtering the data by Trump
+trump_distribution <- timeseries_contrib_multi[timeseries_contrib_multi$candidate_name %in% rows_to_select_trump, ]
+
+# Filtering the data by Sanders
+sanders_distribution <- timeseries_contrib_multi[timeseries_contrib_multi$candidate_name %in% rows_to_select_sanders, ]
+
+# Creating a time-series distribution for Hillary
+ts_plot_1 <- ggplot(aes(x = receipt_month, y = mean_donation),
+       data = hillary_distribution) + 
+  geom_line(linetype = "3313", color = '#00227b') + 
+  geom_hline(yintercept = grand_mean,
+                               linetype = "dashed", alpha = .5) + 
+  geom_point(color = '#00227b') + 
+  coord_cartesian(xlim = c(1, 12)) + 
+  scale_x_continuous(breaks = 1:12,
+                     labels= c('Jan', 'Feb', 'Mar', 'May', 'Apr', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 
+                             'Dec')) + 
+  ylab('Avg contribution ($)') + 
+  xlab('Month') + 
+  ggtitle('Average contributions amount by month for Hillary Clinton') + 
+  geom_line(aes(y=)) + 
+  geom_smooth()
+
+# Creating a time-series distribution for Trump
+ts_plot_2 <- ggplot(aes(x = receipt_month, y = mean_donation),
+       data = trump_distribution) + 
+  geom_line(linetype = "3313", color = '#00227b') + 
+  geom_hline(yintercept = grand_mean,
+                               linetype = "dashed", alpha = .5) + 
+  geom_point(color = '#00227b') + 
+  coord_cartesian(xlim = c(1, 12)) + 
+  scale_x_continuous(breaks = 1:12,
+                     labels= c('Jan', 'Feb', 'Mar', 'May', 'Apr', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 
+                             'Dec')) + 
+  ylab('Avg contribution ($)') + 
+  xlab('Month') + 
+  ggtitle('Average contributions amount by month for Donald Trump') + 
+  geom_line(aes(y=)) + 
+  geom_smooth()
+
+# Creating a time-series distribution for Sanders
+ts_plot_3 <- ggplot(aes(x = receipt_month, y = mean_donation),
+       data = sanders_distribution) + 
+  geom_line(linetype = "3313", color = '#00227b') + 
+  geom_hline(yintercept = grand_mean,
+                               linetype = "dashed", alpha = .5) + 
+  geom_point(color = '#00227b') + 
+  coord_cartesian(xlim = c(1, 12)) + 
+  scale_x_continuous(breaks = 1:12,
+                     labels= c('Jan', 'Feb', 'Mar', 'May', 'Apr', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 
+                             'Dec')) + 
+  ylab('Avg contribution ($)') + 
+  xlab('Month') + 
+  ggtitle('Average contributions amount by month for Bernard Sanders') + 
+  geom_line(aes(y=)) + 
+  geom_smooth()
+
+# Plotting all the charts one over another to compare the distributions
+grid.arrange(ts_plot_1, ts_plot_2, ts_plot_3, ncol = 1)
+
+```
+
+#### The graph above show the distribution of the contributions over time by each candidate. Also, we plotted a linear model to identify the trend of each candidate's distribution. Hillary had a high increase on June (if we take a look at the news, this importnat event happened on this month: "9 June – Obama endorses Clinton"), but after September, her contributions start to decline, following a negative trend. For Trump, on the other hand, the trend is rather stable. Sanders received contributions until July, when he suspended his campaign and endorsed Hillary Clinton (https://tinyurl.com/olpm6ur). Finally, we can spot some seasonal points on the plot for Donald Trump in March (as observed before).
+
+### <strong>Multivariate Analysis</strong>
+
+#### Adding another dimension to the plots allowed us to detail the interaction between the variables. By adding the occupation and candidate together, we were able to draw the contributor profile for each candidate. 
+
+#### Additionally, by adding the candidate feature to the time-series analysis helped us understand how the contributions vary over time. Also, researching the news, we were able to find some important events that happened and which could help us justify some changes on the graph.
+
+#### Finally, for the time-series analysis, we created a linear model to spot the trend of the data for each candidate. Furthermore, we were surprised how much information just a simple date feature can add to our analysis. This information helps us understand what happened in the past, how each candidate is doing in his campaign, the trend of the data and some extreme points and seasonality.
+
+# <strong>Final words and Summary</strong>
+
+------
+
+#### This was a challenging project. I had some trouble manipulating the original dataset to transform it to a cleaner and more informative data structure. For this reason, I wanted to add extra features that would empower our analysis. Features about location and date were added and used extensively. Particularly, the date information was really useful to perform time-series analysis and understand the distribution of the data over time. 
+
+#### Throughout the analysis, we were able to gain some insights about the financial contribution for the 2016 U.S. presidential election. We were able to find the top candidates, location, and occupation which contributed the most to the funding of presidential campaigns. Also, we found very interesting that some important events that happened during the campaign of each candidate had some influence on the amount contributed. Finally, we were able to spot the trends, seasonality and outliers on the data and to draw the profile of people who donated for each presidency candidate.
+
+#### Our work could be improved by adding more features to our dataframe (for example, more information about the contributors (like address, education, etc)) and performing a more elaborated work on time-series analysis, like forecasting, ARIMA, etc. We had some attempts to work with the Facebook library `prophet`, but issues on our environment limited our resources.
+
