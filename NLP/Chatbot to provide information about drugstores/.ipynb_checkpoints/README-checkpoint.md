@@ -67,31 +67,31 @@
 #### Ao abrir o chat pela primeira vez, o mesmo irá aprentar um botão para iniciar a conversa. A figura abaixo ilustra a primeira interação do usuário com o bot.
 
 <p align="center">
-    <img src='print_chat_1.png' width = '50%'/>
+    <img src='print_chat_1.png' width = '30%'/>
 </p> 
 
 #### Ao clicar em "Iniciar" (ou "Get Started", se o seu idioma estiver configurado para o Inglês no Facebook), o bot irá saudar o usuário (pelo seu primeiro nome) e explicar o objetivo do bot e sua utilização mais básica, como mostrado na figura abaixo.
 
 <p align="center">
-    <img src='print_chat_2.png' width = '50%'/>
+    <img src='print_chat_2.png' width = '30%'/>
 </p> 
 
 #### Feita a introdução do bot, é a hora do usuário interagir. Qualquer mensagem que contenha a entidade 'farmácia' será identificada pelo mecanismo de PLN. Com a utilização da ferramenta, foram aplicadas melhorias (treinamento) para que o bot identifique diversas outras formas de escrever a mesma mensagem, até mesmo com erros gramaticais. A figura abaixo ilustra um exemplo de interação com o bot.
 
 <p align="center">
-    <img src='print_chat_3.png' width = '50%'/>
+    <img src='print_chat_3.png' width = '30%'/>
 </p> 
 
 #### Após enviar a solicitação ao bot, após alguns segundos o mesmo retorna com a mensagem informando as farmácias de plantão no dia atual. É comum que mais de uma farmácia esteja de plantão no mesmo dia (no mínimo duas) e, por esse motivo, o chatbot apresenta um componente de lista para comportar a lista de farmácias. Além disso, para cada farmácia, o bot possui informações detalhadas sobre ela (como endereço e telefone) e um botão 'Como chegar' que invoca a aplicação de mapas do smartphone ou abre o Google Maps no navegador para exibir a farmácia desejada no mapa.
 
 <p align="center">
-    <img src='print_chat_4.png' width = '50%'/>
+    <img src='print_chat_4.png' width = '30%'/>
 </p> 
 
 #### Ao clicar na farmácia desejada, a mesma é exibida no mapa para agir a localização da mesma, especialmente se o usuário não tiver familiaridade com a cidade. 
 
 <p align="center">
-    <img src='print_chat_5.png' width = '80%'/>
+    <img src='print_chat_5.png' width = '30%'/>
 </p> 
 
 ### **Indicadores**
