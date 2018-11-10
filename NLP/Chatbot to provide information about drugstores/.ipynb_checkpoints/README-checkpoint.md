@@ -91,7 +91,7 @@ Após enviar a solicitação ao bot, após alguns segundos o mesmo retorna com a
 Ao clicar na farmácia desejada, a mesma é exibida no mapa para agir a localização da mesma, especialmente se o usuário não tiver familiaridade com a cidade. 
 
 <p align="center">
-    <img src='print_chat_5.png' width = '30%'/>
+    <img src='print_chat_5.png' width = '80%'/>
 </p> 
 
 ### **Indicadores**
