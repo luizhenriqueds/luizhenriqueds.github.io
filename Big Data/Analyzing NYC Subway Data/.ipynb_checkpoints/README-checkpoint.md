@@ -17,4 +17,4 @@ Scrapping, Visualização de Dados, Análise Exploratória de Dados, MapReduce
 ## **Observação**
 Este projeto foi adaptado do curso **[Nanodegree Data Scientist](https://br.udacity.com/course/data-scientist--nd025)**, oferecido pela Udacity.
 
-O código desse projeto pode ser encontrado no seguinte endereço: https://tinyurl.com/yby9983z.
+O código desse projeto pode ser encontrado no seguinte endereço: https://tinyurl.com/y7exwy6v.
