@@ -1,4 +1,4 @@
-## Explorando dados de doações à campanha presidencial de 2016 dos Estatos Unidos
+## Explorando dados de doações às campanhas presidencias de 2016 dos Estados Unidos
 
 Nesse relatório, iremos explorar os dados de contribuições financeira para candidatos à presidência na eleição presidencial de 2016 dos Estados Unidos. Em cada seção desse projeto iremos responder diferentes tipos de questionamentos e iremos refinar nossas hipóteses à medida que avançamos a análise. Algumas das questões que iremos responder nesse relatório: 
 

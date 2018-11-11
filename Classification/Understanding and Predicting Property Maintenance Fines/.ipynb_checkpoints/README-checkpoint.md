@@ -1,5 +1,5 @@
 # Entendendo e prevendo o pagamento de multas de propriedades da cidade de Detroit
-A cidade de Detroit aplica multas a moradores que falham em manter suas residências em estado mínimo de preservação ([Blight Ticket](https://midas.umich.edu/wp-content/uploads/sites/3/2017/09/understanding-blight-ticket.pdf)). Estima-se que 20% das propriedades em Detroit se encontram nessa situação. Por esse motivo, todos os anos a cidade tem que emitir multas para esses moradores. Entretanto de pagamento dessas multas é abaixo de 10%, que faz a cidade perder milhões de dólares em tickets não pagos.
+A cidade de Detroit aplica multas a moradores que falham em manter suas residências em estado mínimo de preservação ([Blight Ticket](https://midas.umich.edu/wp-content/uploads/sites/3/2017/09/understanding-blight-ticket.pdf)). Estima-se que 20% das propriedades em Detroit se encontram nessa situação. Por esse motivo, todos os anos a cidade tem que emitir multas para esses moradores. Entretanto, a taxa de pagamento dessas multas é abaixo de 10%, o que faz a cidade perder milhões de dólares em tickets não pagos.
 
 <p align="center">
     <img src='blight_ticket.png' width = '80%'/>
@@ -19,4 +19,6 @@ O dataset utilizado nesse projeto pode ser encontrado no seguinte endereço: htt
 
 ## Observação
 Este projeto é baseado na competição do Michigan Data Science Team ([MDST](https://tinyurl.com/y88gvsam)) e do **[Kaggle](https://tinyurl.com/ycao9u6w)**.
+
+O código deste projeto pode ser encontrado no seguinte endereço: https://tinyurl.com/yd3g3pvw.
 
