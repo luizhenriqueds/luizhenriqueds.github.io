@@ -11,4 +11,4 @@ K-Nearest Neighbors, Regression vs Classification, sklearn, Naive Bayes, Support
 ## **Observação**
 Este projeto foi adaptado do curso **[Nanodegree Data Scientist](https://br.udacity.com/course/data-scientist--nd025)**, oferecido pela Udacity.
 
-O código desse projeto pode ser encontrado no seguinte endereço: .
+O código desse projeto pode ser encontrado no seguinte endereço: https://tinyurl.com/yaajodon.
