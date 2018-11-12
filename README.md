@@ -1,7 +1,13 @@
-# Data Science Projects Portfolio
-Showcase personal projects about Data Science. Some projects include topics such as:
+# Portifólio de projetos em Data Science
+Esse repositório reúne alguns dos projetos de Data Science e Machine Learning que participei, desde projetos adaptados de cursos que participei, projetos profissionais, até projetos pessoais para resolver problemas do meu cotidiano. Os projetos nessa seção foram divididos em categorias para melhor organização.
 
-- Customer segmentation using clustering techniques in Machine Learning: https://tinyurl.com/y7f767uj.
-- Data Analysis of open data: Analysis of Deputies Reimbursements in Brazil: https://tinyurl.com/y7t8gjtf.
-- Natural Language Processing: An end-to-end project applying NLP techniques such as Tokenizing, stopwords, stemming, similarity, word frequency, etc. Additionally, a web service is created to expose the NLP model to external application. Finally, a web application consumes this web service and interacts with the ML engine: https://tinyurl.com/y9sq7dlj;
-- Recommender Systems: recommending beers to users based on their tastes: https://tinyurl.com/yaxgrpfu.
+Nessa seção, iremos abordar as seguintes categorias de problemas:
+
+- **[Big Data](https://github.com/luizhenriqueds/luizhenriqueds.github.io/tree/master/Big%20Data)**: 
+- **[Classification](https://github.com/luizhenriqueds/luizhenriqueds.github.io/tree/master/Classification)**: 
+- **[Clustering](https://github.com/luizhenriqueds/luizhenriqueds.github.io/tree/master/Clustering)**: 
+
+## **Licença**
+
+## **Observação**
+Alguns projetos nesse repositório foram adaptados de cursos online em que participei ao longo dos meus estudos. Alguns projetos encontrados aqui fazem parte do **[Nanodegree Data Scientist](https://br.udacity.com/course/data-scientist--nd025)** e **[Applied Data Science with Python Specialization](https://www.coursera.org/specializations/data-science-python)**. 

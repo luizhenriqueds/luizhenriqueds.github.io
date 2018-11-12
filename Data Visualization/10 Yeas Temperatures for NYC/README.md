@@ -1,6 +1,6 @@
-# Análise Climática de Nova Iorque por 10 anos
+# Análise climática de Nova Iorque em um período de 10 anos
 
-Nesse projeto, analisamos o histórico de temperaturas da cidade de Nova Iorque por um período de 10 anos (2005-2014). Para o ano de 2015, plotamos apenas os dias em que as tempeturas mínima ou máxima bateram o recorde de 10 anos.
+Nesse projeto, analisamos o histórico de temperaturas da cidade de Nova Iorque por um período de 10 anos (2005-2014). Para o ano de 2015, plotamos apenas os dias em que as tempeturas mínima ou máxima bateram o recorde dos anos anteriores.
 
 Adicionalmente, esse projeto possui algumas regras:
 - O intervalo de tempeturas mínima e máxima devem ser preenchidos (**[fill_between](https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.fill_between.html)**);
