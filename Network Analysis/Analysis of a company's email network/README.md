@@ -1,4 +1,4 @@
-# Analisando Grafo de Troca de E-mails entre Usuários de uma Empresa
+# Analisando grafo de troca de e-mails entre usuários de uma empresa
 Este projeto tem o objetivo de aplicar técnicas de Análise de Grafos para analisar uma rede empresarial de troca de e-mails. A partir do grafo de troca de e-mails entre funcionários, iremos extrair atributos dessas conexões para fazer previsões.
 
 Na primeira parte do projeto, iremos receber o grafo de troca de emails e o salário de alguns funcionários. Dentre esses funcionários, alguns possuem o cargo de `gerente`. Por outro lado, alguns funcionários não possuem a informação da remuneração. Portanto, nosso desafio nessa parte é calcular a probabilidade de determinado funcionário (sem a informação do salário) receber o salário gerencial.
