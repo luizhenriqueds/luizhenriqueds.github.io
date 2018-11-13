@@ -1,0 +1,9 @@
+# **Classificação**
+
+Essa seção reúne projetos relacionados ao Aprendizado de Máquina Supervisionado, apresentando problemas do tipo Classificação. Os seguintes projetos são apresentados nessa categoria:
+
+- **[Detecção de Fraude em transações de cartão de crédito (dataset desbalanceado)](https://github.com/luizhenriqueds/luizhenriqueds.github.io/tree/master/Classification/0.94%20AUC%20with%20imbalanced%20dataset)**: Esse projeto aplica técnicas de classificação para prever se uma transação é fraudulenta ou genuína. O desafio desse projeto, no entando, está na natureza do seu dataset;
+
+- **[Encontrando Doadores para CharityML](https://github.com/luizhenriqueds/luizhenriqueds.github.io/tree/master/Classification/Finding%20Donors%20for%20CharityML)**: Esse projeto utiliza dados do senso populacional para prever a probabilidade de um indivíduo doar para uma instituição de caridade fictícia. Esse projeto é adaptado do curso **[Nanodegree Data Scientist](https://br.udacity.com/course/data-scientist--nd025)**, oferecido pela Udacity;
+
+- **[Entendendo e prevendo o pagamento de multas de propriedades da cidade de Detroit](https://github.com/luizhenriqueds/luizhenriqueds.github.io/tree/master/Classification/Understanding%20and%20Predicting%20Property%20Maintenance%20Fines)**: Esse projeto é baseado em uma competição de aprendizado de máquina hospedada pelo time de Ciencia de Dados da Universidade de Michigan. O objetivo desse projeto é prever a probabilidade de um morador pagar uma multa recebida por má preservação da sua propriedade (conhecida como **[blight ticket](https://www.kaggle.com/c/detroit-blight-ticket-compliance)**).
