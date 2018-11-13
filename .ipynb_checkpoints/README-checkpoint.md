@@ -21,7 +21,7 @@ Nesse repositório, iremos abordar as seguintes categorias de problemas:
 
 - **[Recommender Systems](https://github.com/luizhenriqueds/luizhenriqueds.github.io/tree/master/Recommender%20Systems)**: Nessa seção iremos apresentar projetos utilizando técnicas de filtro colaborativo para criar mecanismos de recomendação de produtos para usuários. 
 
-- **[Regression](https://github.com/luizhenriqueds/luizhenriqueds.github.io/tree/master/Regression)**:
+- **[Regression](https://github.com/luizhenriqueds/luizhenriqueds.github.io/tree/master/Regression)**: Nessa seção iremos apresentar um exemplo de criação de modelos preditivos com Regressão Linear. Adicionalmente, tópicos como *Overfitting* e *Underfitting* serão demonstrados na prática.
 
 ## **Observação**
 Alguns projetos nesse repositório foram adaptados de cursos online em que participei ao longo dos meus estudos. Alguns projetos encontrados aqui fazem parte do **[Nanodegree Data Scientist](https://br.udacity.com/course/data-scientist--nd025)** e **[Applied Data Science with Python Specialization](https://www.coursera.org/specializations/data-science-python)**. 
