@@ -3,7 +3,7 @@ Esse repositório reúne alguns dos projetos de Data Science e Machine Learning 
 
 Nesse repositório, iremos abordar as seguintes categorias de problemas:
 
-- **[Big Data](https://github.com/luizhenriqueds/luizhenriqueds.github.io/tree/master/Big%20Data)**: Essa seção reúne projetos relacionados à área de Big Data. Essa categoria possui projetos envolvento MapReduce, Apache Spark MLlib, Sistemas de Recomendação com ALS (Filtro Colaborativo) e códigos executados na plataforma de <i>Analytics</i> como serviço **[Databricks](https://databricks.com/)**;
+- **[Big Data](https://github.com/luizhenriqueds/luizhenriqueds.github.io/tree/master/Big%20Data)**: Essa seção reúne projetos relacionados à área de Big Data. Essa categoria possui projetos envolvendo MapReduce, Apache Spark MLlib, Sistemas de Recomendação com ALS (Filtro Colaborativo) e códigos executados na plataforma de <i>Analytics</i> como serviço **[Databricks](https://databricks.com/)**;
 
 - **[Classification](https://github.com/luizhenriqueds/luizhenriqueds.github.io/tree/master/Classification)**: Essa seção reúne projetos relacionados ao Aprendizado de Máquina Supervisionado, com problemas do tipo Classificação. Nessa categoria, abordamos tópicos como: Modelos Supervisionados (Random Forest, Logistic Regression, Support Vector Machines, Árvores de Decisão, etc.), técnicas de ajustes de hiperparâmetros, normalização de dados, validação cruzada, tratamento de dados desbalanceados, validação de performance, Gridsearch, etc.;
 

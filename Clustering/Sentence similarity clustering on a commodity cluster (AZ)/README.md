@@ -4,12 +4,14 @@ Aplicar técnicas de manipulação e aprendizado de máquina em grande massas de
 
 Neste projeto foram aplicadas técnicas de limpeza e manipulação de dados, técnicas de Processamento de Linguagem Natural (PLN) e Aprendizado de Máquina (AM) para agrupar produtos similares dentro de uma extensa massa de dados.
 
-Para viabilizar o processamento de uma grande massa de dados de itens de Notas Fiscais, foi necessário a criação de um cluster de baixo custo (com máquinas comuns) e a adaptação do código para executar o processamento em paralelo. Para o processamento de grande massa de dados e gerenciamento do cluster, foram utilizadas as ferramentas Apache Hadoop (https://hadoop.apache.org/) e Apache Spark (https://spark.apache.org/).
+Para viabilizar o processamento de uma grande massa de dados de itens de Notas Fiscais, foi necessário a criação de um cluster de baixo custo (com máquinas comuns) e a adaptação do código para executar o processamento em paralelo. Para o processamento de grande massa de dados e gerenciamento do cluster, foram utilizadas as ferramentas **[Apache Hadoop](https://hadoop.apache.org/)** e **[Apache Spark](https://spark.apache.org/)**.
 
 ## **Objetivos**
-- Dada uma massa de dados e um item de pesquisa, realizar uma consulta dentro dessa massa de dados, ordenando o resultado por relevância;
+
 - Utilizar técnicas de Processamento de Linguagem Natural aplicadas à massa de dados com o intuito de identificar itens que estejam associados ao resultados, mas descritos de formas diferentes;
-- Baseado na massa de dados, realizar o agrupamento de itens similares sintaticamente;
+- Definir um *treshold* para indicar qual a distância mínima para que dois ou mais itens possam ser considerado "similares";
+- Realizar o agrupamento dos itens similares sintaticamente;
+- Persistir os agrupamentos resultantes em uma base de dados.
 
 ## **Metodologia**
 
@@ -30,7 +32,7 @@ Claramente estávamos tendo um problema de performance e precisávamos melhorar.
 
 O tempo superior a 20 minutos por arquivo era excessivo e inviável para o projeto. Levando isso em consideração, precisávamos otimizar esse processamento com o poder de processamento limitado que tínhamos (cerca de 5 notebooks com processador Core i3, 4GB de memória RAM e HDD).
 
-A performance do algoritmo precisava ser repensada. Considerando isso, adaptamos o nosso código em python para utilizar frameworks de processamento paralelo para atingir a melhoria necessária. Para isso, utilizando o Apache Hadoop, criamos um cluster de baixo custo com as 5 máquinas supracitadas, totalizando mais de 10GB de memória utilizável e combinando o poder de processamento. Posteriormente, implementamos o algoritmo de limpeza dos arquivos usando o framework Apache Spark. Ne seção de resultados desse artigo iremos discutir sobre as melhorias alcançadas no projeto ao aplicar os ajustes mencionados nessa seção.
+A performance do algoritmo precisava ser repensada. Considerando isso, adaptamos o nosso código em python para utilizar frameworks de processamento paralelo para atingir a melhoria necessária. Para isso, utilizando o Apache Hadoop, criamos um cluster de baixo custo com as 5 máquinas supracitadas, totalizando mais de 10GB de memória utilizável e combinando o poder de processamento. Posteriormente, implementamos o algoritmo de limpeza dos arquivos usando o framework Apache Spark. Na seção de resultados desse artigo iremos discutir sobre as melhorias alcançadas no projeto ao aplicar os ajustes mencionados nessa seção.
 
 Finalmente, com os arquivos limpos, alimentávamos o algoritmo de aprendizado de máquina. 
 
@@ -40,15 +42,15 @@ Nessa etapa, utilizamos técnicas de PLN para limpar, remover palavras desnecess
 
 ### **Motor de Aprendizado de Máquina**
 
-Nessa etapa, utilizamos um algoritmo de aprendizado não supervisionado (clustering) para criar agrupamentos entre produtos similares sintaticamente. A ideia era aplicar a distância de Levenshtein para calcular a similaridade entre termos. Termos com similaridade acima de 0.70 eram alocados no mesmo grupo. Adicionalmente, o algoritmo de clusterização utilizado foi o DBSCAN, por questões de performance e por ter a característica de remover outliers.
+Nessa etapa, utilizamos um algoritmo de aprendizado não supervisionado (clustering) para criar agrupamentos entre produtos similares sintaticamente. A ideia era aplicar a distância de Levenshtein para calcular a similaridade entre termos. Termos com similaridade acima de 0.70 eram alocados no mesmo grupo. Adicionalmente, o algoritmo de clusterização utilizado foi o DBSCAN, por questões de performance e por ter a característica de remoção de *outliers*.
  
 ### **Saída**
 
-Por fim, a saída gerada pelo algoritmo era persistida em uma base de dados noSQL no MongoDB para análise posterior. Cada cluster possuía a sua lista de produtos similares que, posteriormente, poderíam ser, por exemplo, renomeados para um nome em comum.
+Por fim, a saída gerada pelo algoritmo era persistida em uma base de dados noSQL no MongoDB para análise posterior. Cada cluster possuía a sua lista de produtos similares que, posteriormente, poderíam ser, por exemplo, renomeados para um nome padronizado.
 
 ## **Resultados**
 
-Elaborando um pouco mais sobre as melhorias implementadas nesse projeto, ao final da adaptação do código para o processamento distribuído, conseguimos uma melhoria superior a 90% no tempo de limpeza de cada arquivo. Além disso, todo do processo, da entrada dos dados até a saída para persistência, foi concluído de forma mais rápida do que todo o tempo utulizado pela limpeza dos arquivos antes do projeto estar utilizando frameworks de processamento distribuído. 
+Elaborando um pouco mais sobre as melhorias implementadas nesse projeto, ao final da adaptação do código para o processamento distribuído, conseguimos uma melhoria superior a 90% no tempo de limpeza de cada arquivo. Além disso, todo do processo, da entrada dos dados até a saída para persistência, foi concluído de forma mais rápida do que todo o tempo utilizado pela limpeza dos arquivos antes do projeto estar utilizando frameworks de processamento distribuído. 
 
 ## **Habilidades aplicadas**
 
