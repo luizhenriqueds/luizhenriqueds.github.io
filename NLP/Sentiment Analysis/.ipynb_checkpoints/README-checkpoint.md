@@ -9,4 +9,4 @@ Processamento de Linguagem Natural, Aprendizado Supervisionado, Manipulação de
 ## **Dataset**
 O dataset utilizado nesse projeto pode ser encontrado nesse endereço: https://tinyurl.com/yam6lkcx.
 
-O código desse projeto pode ser encontrado no seguinte endereço: https://tinyurl.com/ycs6dhvg.
+O código desse projeto pode ser encontrado no seguinte endereço: https://tinyurl.com/yc8g6slw.
